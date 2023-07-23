@@ -1,41 +1,33 @@
 package com.stslex.aproselection.feature.auth.ui
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stslex.aproselection.core.network.client.NetworkClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.http.appendPathSegments
-import kotlinx.coroutines.flow.SharingStarted
+import com.stslex.aproselection.core.ui.base.BaseViewModel
+import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class AuthViewModel(
-    private val networkClient: NetworkClient
-) : ViewModel() {
+    private val interactor: AuthInteractor
+) : BaseViewModel() {
+
+    private val _text: MutableStateFlow<String> = MutableStateFlow("...")
 
     val text: StateFlow<String>
-        get() = flow {
-            val result = networkClient.apiClient.get {
-                url.appendPathSegments("hello")
-            }
-                .body<HelloRequest>()
-                .hello
-            emit(result)
-        }
-            .catch {
-                Log.e(javaClass.simpleName, it.message, it)
-            }
-            .stateIn(viewModelScope, SharingStarted.Lazily, "")
-}
+        get() = _text.asStateFlow()
 
-@Serializable
-data class HelloRequest(
-    @SerialName("text")
-    val hello: String
-)
+    fun setUsername(username: String) {
+        _text.value = "..."
+        interactor.getHello(username)
+            .catch { throwable ->
+                handleError(throwable)
+            }
+            .onEach { receivedText ->
+                _text.emit(receivedText)
+            }
+            .launchIn(viewModelScope)
+    }
+}
