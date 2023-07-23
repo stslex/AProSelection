@@ -1,8 +1,6 @@
 package com.stslex.aproselection
 
 import com.android.build.api.dsl.CommonExtension
-import com.android.build.api.dsl.DefaultConfig
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -27,7 +25,6 @@ internal fun Project.configureKotlinAndroid(
         defaultConfig {
             minSdk = 28
             buildFeatures.buildConfig = true
-            setLocalProperty(project.rootProject)
         }
 
         compileOptions {
@@ -101,14 +98,4 @@ private fun Project.configureKotlin() {
             )
         }
     }
-}
-
-
-fun DefaultConfig.setLocalProperty(
-    dir: Project
-) {
-    val key = gradleLocalProperties(dir.projectDir)["API_KEY"]
-        ?.toString()
-        ?: throw IllegalStateException("API_KEY should be initialised")
-    buildConfigField("String", "API_KEY", key)
 }
