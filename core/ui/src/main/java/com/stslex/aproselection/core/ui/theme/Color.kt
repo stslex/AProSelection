@@ -1,4 +1,4 @@
-package com.stslex.aproselection.ui.theme
+package com.stslex.aproselection.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.stslex.aproselection.core.network
+package com.stslex.aproselection.core.ui.navigation
 
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry

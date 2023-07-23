@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.stslex.aproselection.core.network.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.NavigationScreen
 
 @Composable
 fun AuthScreen(
