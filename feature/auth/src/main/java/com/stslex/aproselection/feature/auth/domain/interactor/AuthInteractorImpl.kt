@@ -7,6 +7,9 @@ class AuthInteractorImpl(
     private val repository: AuthRepository
 ) : AuthInteractor {
 
-    override val hello: Flow<String>
-        get() = repository.hello
+    override fun getHello(
+        username: String
+    ): Flow<String> = repository.getHello(
+        username = username
+    )
 }

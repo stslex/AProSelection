@@ -4,5 +4,5 @@ import com.stslex.aproselection.core.network.clients.auth.model.HelloRequestMode
 
 interface AuthNetworkClient {
 
-    suspend fun getHello(): HelloRequestModel
+    suspend fun getHello(username: String): HelloRequestModel
 }

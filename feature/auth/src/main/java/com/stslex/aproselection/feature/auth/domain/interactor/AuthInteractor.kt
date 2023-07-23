@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthInteractor {
 
-    val hello: Flow<String>
+    fun getHello(username: String): Flow<String>
 }

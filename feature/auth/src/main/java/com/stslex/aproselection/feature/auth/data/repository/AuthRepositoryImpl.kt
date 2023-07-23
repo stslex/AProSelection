@@ -8,8 +8,10 @@ class AuthRepositoryImpl(
     private val networkClient: AuthNetworkClient
 ) : AuthRepository {
 
-    override val hello: Flow<String> = flow {
-        val helloResponse = networkClient.getHello().text
+    override fun getHello(username: String): Flow<String> = flow {
+        val helloResponse = networkClient
+            .getHello(username = username)
+            .text
         emit(helloResponse)
     }
 }
