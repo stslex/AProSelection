@@ -6,8 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.stslex.aproselection.core.network.AppDestination
-import com.stslex.aproselection.core.network.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.AppDestination
+import com.stslex.aproselection.core.ui.navigation.NavigationScreen
 import com.stslex.aproselection.feature.auth.ui.AuthScreen
 import com.stslex.aproselection.feature.auth.ui.AuthViewModel
 import org.koin.androidx.compose.koinViewModel

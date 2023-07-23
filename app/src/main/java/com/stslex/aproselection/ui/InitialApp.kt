@@ -1,4 +1,4 @@
-package com.stslex.aproselection.ui.components
+package com.stslex.aproselection.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stslex.aproselection.navigation.NavigationHost
-import com.stslex.aproselection.ui.theme.AppTheme
+import com.stslex.aproselection.core.ui.theme.AppTheme
 
 @Composable
 fun InitialApp() {

@@ -1,4 +1,4 @@
-package com.stslex.aproselection.feature.auth
+package com.stslex.aproselection.core.ui
 
 import org.junit.Test
 

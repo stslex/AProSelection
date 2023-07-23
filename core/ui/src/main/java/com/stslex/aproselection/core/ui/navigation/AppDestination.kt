@@ -1,4 +1,4 @@
-package com.stslex.aproselection.core.network
+package com.stslex.aproselection.core.ui.navigation
 
 enum class AppDestination(
     vararg val argsNames: String
