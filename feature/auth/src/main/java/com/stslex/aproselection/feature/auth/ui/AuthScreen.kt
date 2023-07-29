@@ -25,10 +25,14 @@ import com.stslex.aproselection.core.ui.navigation.NavigationScreen
 fun AuthScreen(
     text: String,
     navigate: (NavigationScreen) -> Unit,
-    setUsername: (String) -> Unit,
+    auth: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var inputUsername by remember {
+        mutableStateOf("")
+    }
+
+    var inputPassword by remember {
         mutableStateOf("")
     }
 
@@ -52,9 +56,19 @@ fun AuthScreen(
                 maxLines = 1,
             )
             Divider(Modifier.padding(16.dp))
+            TextField(
+                value = inputPassword,
+                onValueChange = { value ->
+                    if (inputPassword != value) {
+                        inputPassword = value
+                    }
+                },
+                maxLines = 1,
+            )
+            Divider(Modifier.padding(16.dp))
             ElevatedButton(
                 onClick = {
-                    setUsername(inputUsername)
+                    auth(inputUsername, inputPassword)
                     inputUsername = ""
                 }
             ) {
@@ -73,12 +87,12 @@ fun AuthScreen(
     }
 }
 
-@Preview(device = "id:pixel_6", showSystemUi = true, showBackground = true)
-@Composable
-fun AuthScreenPreview() {
-    AuthScreen(
-        text = "text",
-        navigate = {},
-        setUsername = {}
-    )
-}
+//@Preview(device = "id:pixel_6", showSystemUi = true, showBackground = true)
+//@Composable
+//fun AuthScreenPreview() {
+//    AuthScreen(
+//        text = "text",
+//        navigate = {},
+//        setUsername = {}
+//    )
+//}

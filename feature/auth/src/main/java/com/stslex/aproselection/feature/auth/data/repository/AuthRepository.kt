@@ -1,8 +1,11 @@
 package com.stslex.aproselection.feature.auth.data.repository
 
+import com.stslex.aproselection.feature.auth.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
 
-    fun getHello(username: String): Flow<String>
+    fun auth(username: String, password: String): Flow<UserModel>
+
+    fun register(username: String, password: String): Flow<UserModel>
 }

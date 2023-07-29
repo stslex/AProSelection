@@ -16,9 +16,11 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.URLProtocol
 import io.ktor.http.appendPathSegments
+import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
@@ -98,13 +100,14 @@ class NetworkClientImpl(
                     headers.append("API_KEY", BuildConfig.API_KEY)
                     headers.append("DEVICE_ID", "test")
                     headers.append("uuid", uuid.value)
+                    contentType(ContentType.Application.Json)
                 }
                 bearerAuth(token = token.value)
             }
         }
 
-    private suspend fun regenerateToken() {
-        val token = client
+    override suspend fun regenerateToken() {
+        val token = apiClient
             .get {
                 url.appendPathSegments("token")
             }

@@ -28,7 +28,7 @@ fun NavGraphBuilder.authRouter(
         AuthScreen(
             text = text,
             navigate = navigate,
-            setUsername = viewModel::setUsername,
+            auth = viewModel::auth,
             modifier = modifier
         )
     }

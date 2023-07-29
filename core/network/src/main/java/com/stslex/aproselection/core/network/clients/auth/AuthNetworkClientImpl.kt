@@ -6,6 +6,7 @@ import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponse
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthSendModel
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.appendPathSegments
 import kotlinx.coroutines.Dispatchers
@@ -35,9 +36,9 @@ class AuthNetworkClientImpl(
     ): Flow<UserAuthResponseModel> = flow {
         val result = networkClient
             .apiClient
-            .get {
+            .post {
                 url.appendPathSegments("passport/auth")
-                setBody(user)
+                setBody<UserAuthSendModel>(user)
             }
             .body<UserAuthResponseModel>()
         emit(result)
@@ -49,9 +50,9 @@ class AuthNetworkClientImpl(
     ): Flow<UserAuthResponseModel> = flow {
         val result = networkClient
             .apiClient
-            .get {
+            .post {
                 url.appendPathSegments("passport/register")
-                setBody(user)
+                setBody<UserAuthSendModel>(user)
             }
             .body<UserAuthResponseModel>()
         emit(result)

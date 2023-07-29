@@ -19,14 +19,20 @@ class AuthViewModel(
     val text: StateFlow<String>
         get() = _text.asStateFlow()
 
-    fun setUsername(username: String) {
+    fun auth(username: String, password: String) {
         _text.value = "..."
-        interactor.getHello(username)
+
+        interactor
+            .register(
+                username = username,
+                password = password
+            )
             .catch { throwable ->
+                _text.emit("Error: ${throwable.localizedMessage}")
                 handleError(throwable)
             }
-            .onEach { receivedText ->
-                _text.emit(receivedText)
+            .onEach { userModel ->
+                _text.emit("Success: uuid--${userModel.uuid}")
             }
             .launchIn(viewModelScope)
     }
