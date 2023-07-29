@@ -1,6 +1,7 @@
 package com.stslex.aproselection
 
 import android.app.Application
+import com.stslex.aproselection.core.datastore.coreDataStoreModule
 import com.stslex.aproselection.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import com.stslex.aproselection.feature.auth.di.ModuleFeatureAuth.moduleFeatureAuth
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +17,8 @@ class SelectApplication : Application() {
             androidContext(applicationContext)
             modules(
                 moduleFeatureAuth,
-                moduleCoreNetwork
+                moduleCoreNetwork,
+                coreDataStoreModule
             )
         }
     }
