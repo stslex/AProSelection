@@ -7,4 +7,6 @@ interface NetworkClient {
     val client: HttpClient
 
     val apiClient: HttpClient
+
+    suspend fun regenerateToken()
 }

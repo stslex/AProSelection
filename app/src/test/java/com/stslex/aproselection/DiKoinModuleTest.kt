@@ -1,6 +1,7 @@
 package com.stslex.aproselection
 
 import android.content.Context
+import com.stslex.aproselection.core.datastore.coreDataStoreModule
 import com.stslex.aproselection.core.network.di.ModuleCoreNetwork
 import com.stslex.aproselection.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
 import com.stslex.aproselection.feature.auth.di.ModuleFeatureAuth.moduleFeatureAuth
@@ -19,7 +20,8 @@ class DiKoinModuleTest : KoinTest {
             androidContext(Mockito.mock(Context::class.java))
             modules(
                 moduleFeatureAuth,
-                moduleCoreNetwork
+                moduleCoreNetwork,
+                coreDataStoreModule
             )
             checkModules()
         }
