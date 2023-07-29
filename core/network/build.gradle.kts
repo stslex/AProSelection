@@ -6,6 +6,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":core:datastore"))
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.okhttp)
 }
