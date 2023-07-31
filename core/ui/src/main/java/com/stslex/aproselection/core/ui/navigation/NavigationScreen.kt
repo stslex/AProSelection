@@ -14,8 +14,12 @@ sealed class NavigationScreen {
         get() = AppArguments.Empty
 
     object Auth : NavigationScreen() {
-
         override val screen: AppDestination = AppDestination.AUTH
+        override val isSingleTop: Boolean = true
+    }
+
+    object Home : NavigationScreen() {
+        override val screen: AppDestination = AppDestination.HOME
         override val isSingleTop: Boolean = true
     }
 

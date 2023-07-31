@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import com.stslex.aproselection.core.ui.navigation.AppDestination
 import com.stslex.aproselection.core.ui.navigation.NavigationScreen
 import com.stslex.aproselection.feature.auth.ui.navigation.authRouter
+import com.stslex.aproselection.feature.home.ui.navigation.homeRouter
 
 @Composable
 fun NavigationHost(
@@ -25,6 +26,7 @@ fun NavigationHost(
         startDestination = startDestination.route
     ) {
         authRouter(modifier, navigator)
+        homeRouter(modifier, navigator)
     }
 }
 

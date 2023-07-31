@@ -9,7 +9,6 @@ import com.stslex.aproselection.navigation.NavigationHost
 @Composable
 fun InitialApp() {
     val navController = rememberNavController()
-
     NavigationHost(navController = navController)
 }
 

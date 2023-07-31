@@ -9,8 +9,9 @@ enum class AuthState(
     AUTH(R.string.auth),
     REGISTER(R.string.register);
 
-    fun onClick(): AuthState = when (this) {
-        AUTH -> REGISTER
-        REGISTER -> AUTH
-    }
+    val inverse: AuthState
+        get() = when (this) {
+            AUTH -> REGISTER
+            REGISTER -> AUTH
+        }
 }
