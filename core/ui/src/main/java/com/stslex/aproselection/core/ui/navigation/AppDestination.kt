@@ -4,7 +4,8 @@ enum class AppDestination(
     vararg val argsNames: String
 ) {
     AUTH,
-    HOME;
+    HOME,
+    SPLASH;
 
     val route: String
         get() = StringBuilder()

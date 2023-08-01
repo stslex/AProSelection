@@ -15,7 +15,6 @@ class HomeViewModel(
         viewModelScope.launch {
             appDataStore.setToken("")
             appDataStore.setUuid("")
-            navigation(NavigationScreen.PopBackStack)
         }
     }
 }

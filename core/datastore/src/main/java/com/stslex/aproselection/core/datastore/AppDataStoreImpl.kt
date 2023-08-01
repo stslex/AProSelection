@@ -5,7 +5,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
 class AppDataStoreImpl(
@@ -20,14 +22,18 @@ class AppDataStoreImpl(
     }
 
     override val uuid: Flow<String>
-        get() = context.dataStore.data.map { prefs ->
-            prefs[UUID_KEY].orEmpty()
-        }
+        get() = context.dataStore.data
+            .map { prefs ->
+                prefs[UUID_KEY].orEmpty()
+            }
+            .flowOn(Dispatchers.IO)
 
     override val token: Flow<String>
-        get() = context.dataStore.data.map { prefs ->
-            prefs[TOKEN_KEY].orEmpty()
-        }
+        get() = context.dataStore.data
+            .map { prefs ->
+                prefs[TOKEN_KEY].orEmpty()
+            }
+            .flowOn(Dispatchers.IO)
 
     override suspend fun setUuid(uuid: String) {
         context.dataStore.updateData { prefs ->

@@ -15,21 +15,12 @@ import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
-    val dataStore by inject<AppDataStore>()
-    val networkClient by inject<NetworkClient>()
+    private val dataStore by inject<AppDataStore>()
+    private val networkClient by inject<NetworkClient>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        dataStore.token
-            .catch {
-                Log.e(it.message, javaClass.simpleName, it)
-            }
-            .onEach {
-                if (it.isBlank()) {
-                    networkClient.regenerateToken()
-                }
-            }
-            .launchIn(lifecycleScope)
+
         setContent {
             AppTheme {
                 InitialApp()

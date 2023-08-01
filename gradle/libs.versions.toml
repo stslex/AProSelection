@@ -1,6 +1,7 @@
 [versions]
 androidDesugarJdkLibs = "2.0.3"
-kotlin = "1.8.22"
+kotlin = "1.9.0"
+kotlinLanguage = "1.9"
 androidGradlePlugin = "8.0.2"
 
 ktx = "1.10.1"
@@ -8,7 +9,7 @@ material = "1.9.0"
 appcompat = "1.6.1"
 immutableCollection = "0.3.5"
 
-composeCompiler = "1.4.8"
+composeCompiler = "1.5.1"
 composeBom = "2023.06.01"
 composeNavigation = "2.6.0"
 accompanist = "0.30.0"
