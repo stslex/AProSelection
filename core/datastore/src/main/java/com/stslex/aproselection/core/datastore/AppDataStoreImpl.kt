@@ -43,7 +43,6 @@ class AppDataStoreImpl(
         }
     }
 
-
     override suspend fun setToken(token: String) {
         context.dataStore.updateData { prefs ->
             prefs.toMutablePreferences().apply {

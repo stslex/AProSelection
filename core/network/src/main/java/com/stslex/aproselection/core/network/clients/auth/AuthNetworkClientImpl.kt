@@ -30,7 +30,6 @@ class AuthNetworkClientImpl(
             .body()
     }
 
-
     override fun auth(
         user: UserAuthSendModel
     ): Flow<UserAuthResponseModel> = flow {

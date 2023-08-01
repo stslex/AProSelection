@@ -42,6 +42,7 @@ class NetworkClientImpl(
     private val _uuid = MutableStateFlow("")
     private val uuid = _uuid.asStateFlow()
 
+    // TODO (вынести из init блока)
     init {
         dataStore.token
             .onEach {

@@ -22,6 +22,7 @@ class InitialAppViewModel(
     val isAuth: StateFlow<Boolean?>
         get() = _isAuth.asStateFlow()
 
+    // TODO (вынести из init блока)
     init {
         dataStore.token
             .catch { error ->
