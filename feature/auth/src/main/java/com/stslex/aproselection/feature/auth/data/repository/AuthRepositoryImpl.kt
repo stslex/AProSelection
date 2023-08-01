@@ -14,7 +14,6 @@ class AuthRepositoryImpl(
     private val dataSource: AppDataStore
 ) : AuthRepository {
 
-
     override fun auth(
         username: String,
         password: String

@@ -1,25 +1,34 @@
 package com.stslex.aproselection.core.ui.navigation
 
-sealed class NavigationScreen {
+sealed interface NavigationScreen {
 
-    abstract val screen: AppDestination
+    val screen: AppDestination
 
     val screenRoute: String
         get() = "${screen.route}${appArgs.argumentsForRoute}"
 
-    open val isSingleTop: Boolean
+    val isSingleTop: Boolean
         get() = false
 
-    open val appArgs: AppArguments
+    val appArgs: AppArguments
         get() = AppArguments.Empty
 
-    object Auth : NavigationScreen() {
-
+    data object Auth : NavigationScreen {
         override val screen: AppDestination = AppDestination.AUTH
         override val isSingleTop: Boolean = true
     }
 
-    object PopBackStack : NavigationScreen() {
+    data object Home : NavigationScreen {
+        override val screen: AppDestination = AppDestination.HOME
+        override val isSingleTop: Boolean = true
+    }
+
+    data object Splash: NavigationScreen{
+        override val screen: AppDestination = AppDestination.SPLASH
+        override val isSingleTop: Boolean = true
+    }
+
+    data object PopBackStack : NavigationScreen {
         override val screen: AppDestination = throw Exception("PopBackStack")
         override val appArgs: AppArguments = throw Exception("PopBackStack")
     }

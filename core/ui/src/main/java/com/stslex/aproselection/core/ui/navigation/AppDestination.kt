@@ -3,7 +3,9 @@ package com.stslex.aproselection.core.ui.navigation
 enum class AppDestination(
     vararg val argsNames: String
 ) {
-    AUTH;
+    AUTH,
+    HOME,
+    SPLASH;
 
     val route: String
         get() = StringBuilder()
