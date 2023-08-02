@@ -1,4 +1,4 @@
-package com.stslex.aproselection.core.ui.navigation
+package com.stslex.aproselection.core.ui.navigation.destination
 
 sealed interface NavigationScreen {
 
@@ -20,11 +20,6 @@ sealed interface NavigationScreen {
 
     data object Home : NavigationScreen {
         override val screen: AppDestination = AppDestination.HOME
-        override val isSingleTop: Boolean = true
-    }
-
-    data object Splash: NavigationScreen{
-        override val screen: AppDestination = AppDestination.SPLASH
         override val isSingleTop: Boolean = true
     }
 

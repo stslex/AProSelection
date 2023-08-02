@@ -2,7 +2,8 @@ package com.stslex.aproselection.feature.auth.ui
 
 import androidx.lifecycle.viewModelScope
 import com.stslex.aproselection.core.ui.base.BaseViewModel
-import com.stslex.aproselection.core.ui.navigation.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.destination.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.navigator.Navigator
 import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
 import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
 import com.stslex.aproselection.feature.auth.ui.model.ErrorType
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.update
 
 class AuthViewModel(
     private val interactor: AuthInteractor,
-    private val navigate: (NavigationScreen) -> Unit
+    private val navigator: Navigator
 ) : BaseViewModel() {
 
     private val _screenState = MutableStateFlow(ScreenState())
@@ -119,7 +120,7 @@ class AuthViewModel(
             }
             .onEach {
                 setLoadingState(ScreenLoadingState.Content)
-                navigate(NavigationScreen.Home)
+                navigator.navigate(NavigationScreen.Home)
             }
             .launchIn(viewModelScope)
     }

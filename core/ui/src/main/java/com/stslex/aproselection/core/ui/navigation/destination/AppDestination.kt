@@ -1,11 +1,10 @@
-package com.stslex.aproselection.core.ui.navigation
+package com.stslex.aproselection.core.ui.navigation.destination
 
 enum class AppDestination(
     vararg val argsNames: String
 ) {
     AUTH,
-    HOME,
-    SPLASH;
+    HOME;
 
     val route: String
         get() = StringBuilder()
@@ -26,5 +25,13 @@ enum class AppDestination(
     companion object {
         private const val SEPARATOR_ROUTE = "_"
         private const val TAG_ROUTE = "route"
+
+        fun getStartDestination(
+            isAuth: Boolean?
+        ) = when (isAuth) {
+            true -> HOME
+            false -> AUTH
+            null -> null
+        }
     }
 }

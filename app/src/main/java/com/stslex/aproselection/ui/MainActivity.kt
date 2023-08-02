@@ -1,30 +1,38 @@
 package com.stslex.aproselection.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.lifecycle.lifecycleScope
-import com.stslex.aproselection.core.datastore.AppDataStore
-import com.stslex.aproselection.core.network.client.NetworkClient
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.stslex.aproselection.core.ui.theme.AppTheme
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
+import com.stslex.aproselection.di.navigationModule
+import org.koin.androidx.compose.getKoin
 
 class MainActivity : ComponentActivity() {
-
-    private val dataStore by inject<AppDataStore>()
-    private val networkClient by inject<NetworkClient>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val navHostController = rememberNavController()
+            SetupComposeDependencies(navHostController)
             AppTheme {
-                InitialApp()
+                InitialApp(
+                    navController = navHostController
+                )
             }
         }
+    }
+
+    @Composable
+    private fun SetupComposeDependencies(
+        navController: NavHostController
+    ) {
+        val navModule = navigationModule(navController)
+        getKoin().loadModules(
+            listOf(navModule)
+        )
     }
 }

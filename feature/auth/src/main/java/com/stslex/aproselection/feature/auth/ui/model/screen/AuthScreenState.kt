@@ -31,7 +31,14 @@ data class AuthScreenState(
     private val processAction: (ScreenAction) -> Unit,
     private val keyboardController: SoftwareKeyboardController? = null
 ) {
-    val isFieldsValid = username.length >= 4 && password.length >= 4
+    val isFieldsValid: Boolean
+        get() {
+            val isCorrectLength = username.length >= 4 && password.length >= 4
+            val isEqualsPasswords = password == passwordSubmit
+            val isRegisterPassword = authFieldsState == AuthFieldsState.AUTH || isEqualsPasswords
+            return isCorrectLength && isRegisterPassword
+        }
+
     val isRegisterState = authFieldsState == AuthFieldsState.REGISTER
 
     fun onUsernameChange(username: String) {
