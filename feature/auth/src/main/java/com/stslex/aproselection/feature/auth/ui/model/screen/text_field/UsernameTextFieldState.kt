@@ -1,10 +1,13 @@
 package com.stslex.aproselection.feature.auth.ui.model.screen.text_field
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import com.stslex.aproselection.feature.auth.R
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.UsernameInput
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.AuthTextField
 
+@Stable
 data class UsernameTextFieldState(
     private val processAction: (UsernameInput) -> Unit,
     override val text: String,

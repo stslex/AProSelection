@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppTheme
-import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.PasswordTextFieldState
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
 
 @Composable
 fun AuthPasswordTextField(

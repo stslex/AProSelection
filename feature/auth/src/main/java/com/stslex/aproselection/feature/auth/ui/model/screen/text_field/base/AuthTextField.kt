@@ -1,5 +1,8 @@
-package com.stslex.aproselection.feature.auth.ui.model.screen.text_field
+package com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base
 
+import androidx.compose.runtime.Stable
+
+@Stable
 abstract class AuthTextField {
 
     abstract val text: String
@@ -10,8 +13,9 @@ abstract class AuthTextField {
         get() = "${text.length}/$MAX_SYMBOL_COUNT"
 
     fun onTextChange(value: String) {
-        if (text == value || value.length > MAX_SYMBOL_COUNT) return
-        sendAction(value)
+        val currentValue = value.trim()
+        if (text == currentValue || currentValue.length > MAX_SYMBOL_COUNT) return
+        sendAction(currentValue)
     }
 
     companion object {
