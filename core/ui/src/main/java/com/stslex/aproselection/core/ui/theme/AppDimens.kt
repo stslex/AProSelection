@@ -6,6 +6,7 @@ object AppDimens {
 
     object Padding {
 
+        val smallest = 4.dp
         val small = 8.dp
         val medium = 16.dp
         val big = 32.dp

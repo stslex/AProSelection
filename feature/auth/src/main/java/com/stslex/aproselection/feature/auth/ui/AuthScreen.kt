@@ -5,7 +5,9 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
@@ -14,11 +16,14 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.components.ErrorSnackbar
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.feature.auth.R
 import com.stslex.aproselection.feature.auth.ui.components.AuthBottomText
 import com.stslex.aproselection.feature.auth.ui.components.AuthFieldsColumn
 import com.stslex.aproselection.feature.auth.ui.components.AuthTitle
@@ -26,6 +31,7 @@ import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.AuthScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.rememberAuthScreenState
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.UsernameTextFieldState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 
@@ -90,47 +96,32 @@ fun AuthScreenContent(
 
 @Composable
 fun AuthUsernameTextField(
-    inputUsername: String,
-    onTextChange: (String) -> Unit,
+    state: UsernameTextFieldState,
     modifier: Modifier = Modifier
 ) {
     TextField(
-        modifier = modifier,
-        value = inputUsername,
-        onValueChange = { value ->
-            if (inputUsername != value) {
-                onTextChange(value)
-            }
-        },
+        modifier = modifier
+            .fillMaxWidth(),
+        value = state.text,
+        onValueChange = state::onTextChange,
         singleLine = true,
         label = {
-            Text(text = "username")
-        }
-    )
-}
-
-@Composable
-fun AuthPasswordTextField(
-    inputPassword: String,
-    onTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        modifier = modifier,
-        value = inputPassword,
-        onValueChange = { value ->
-            if (inputPassword != value) {
-                onTextChange(value)
-            }
+            Text(
+                text = stringResource(id = R.string.auth_username_text)
+            )
         },
-        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
         supportingText = {
-            Text(text = "enter password")
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    text = state.supportingEndText
+                )
+            }
         },
-        visualTransformation = PasswordVisualTransformation(),
-        label = {
-            Text(text = "password")
-        }
     )
 }
 

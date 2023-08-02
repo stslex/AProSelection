@@ -9,6 +9,9 @@ import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
 import com.stslex.aproselection.feature.auth.ui.model.ErrorType
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordInput
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordSubmitInput
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.UsernameInput
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenEvent
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,15 +40,15 @@ class AuthViewModel(
 
     fun process(action: ScreenAction) {
         when (action) {
-            is ScreenAction.UsernameInput -> processUsernameInput(action)
+            is UsernameInput -> processUsernameInput(action)
             is ScreenAction.OnSubmitClicked -> processSubmitClicked()
-            is ScreenAction.PasswordInput -> processPasswordInput(action)
-            is ScreenAction.PasswordSubmitInput -> processPasswordSubmitInput(action)
+            is PasswordInput -> processPasswordInput(action)
+            is PasswordSubmitInput -> processPasswordSubmitInput(action)
             is ScreenAction.OnAuthFieldChange -> processAuthFieldChange()
         }
     }
 
-    private fun processUsernameInput(action: ScreenAction.UsernameInput) {
+    private fun processUsernameInput(action: UsernameInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
                 username = action.value
@@ -53,7 +56,7 @@ class AuthViewModel(
         }
     }
 
-    private fun processPasswordInput(action: ScreenAction.PasswordInput) {
+    private fun processPasswordInput(action: PasswordInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
                 password = action.value
@@ -61,10 +64,10 @@ class AuthViewModel(
         }
     }
 
-    private fun processPasswordSubmitInput(action: ScreenAction.PasswordSubmitInput) {
+    private fun processPasswordSubmitInput(action: PasswordSubmitInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
-                passwordSubmit = action.value
+                passwordSubmit = action.value,
             )
         }
     }

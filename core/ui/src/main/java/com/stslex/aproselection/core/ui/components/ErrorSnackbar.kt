@@ -44,6 +44,7 @@ fun ErrorSnackbar(
     } else {
         MaterialTheme.colorScheme.onErrorContainer
     }
+
     Snackbar(
         modifier = modifier
             .padding(AppDimens.Padding.medium)
