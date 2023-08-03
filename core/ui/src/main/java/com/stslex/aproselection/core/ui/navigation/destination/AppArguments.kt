@@ -1,4 +1,4 @@
-package com.stslex.aproselection.core.ui.navigation
+package com.stslex.aproselection.core.ui.navigation.destination
 
 sealed class AppArguments {
 

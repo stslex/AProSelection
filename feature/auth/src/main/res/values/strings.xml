@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="auth">log in</string>
-    <string name="register">register (if not have account)</string>
+    <string name="auth_button_choose_log_in">log in (if not have account)</string>
+    <string name="auth_button_choose_register">register (if not have account)</string>
+    <string name="auth_title_auth">Authentication</string>
+    <string name="auth_title_register">Registration</string>
+    <string name="auth_username_text">username</string>
+    <string name="auth_password_text">password</string>
+    <string name="auth_password_enter_hint_text">enter password</string>
+    <string name="auth_password_submit_hint_text">repeat password</string>
 </resources>

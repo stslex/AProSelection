@@ -2,12 +2,16 @@ package com.stslex.aproselection.feature.auth.ui
 
 import androidx.lifecycle.viewModelScope
 import com.stslex.aproselection.core.ui.base.BaseViewModel
-import com.stslex.aproselection.core.ui.navigation.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.destination.NavigationScreen
+import com.stslex.aproselection.core.ui.navigation.navigator.Navigator
 import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
 import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
 import com.stslex.aproselection.feature.auth.ui.model.ErrorType
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordInput
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordSubmitInput
+import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.UsernameInput
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenEvent
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -23,7 +27,7 @@ import kotlinx.coroutines.flow.update
 
 class AuthViewModel(
     private val interactor: AuthInteractor,
-    private val navigate: (NavigationScreen) -> Unit
+    private val navigator: Navigator
 ) : BaseViewModel() {
 
     private val _screenState = MutableStateFlow(ScreenState())
@@ -36,15 +40,15 @@ class AuthViewModel(
 
     fun process(action: ScreenAction) {
         when (action) {
-            is ScreenAction.UsernameInput -> processUsernameInput(action)
+            is UsernameInput -> processUsernameInput(action)
             is ScreenAction.OnSubmitClicked -> processSubmitClicked()
-            is ScreenAction.PasswordInput -> processPasswordInput(action)
-            is ScreenAction.PasswordSubmitInput -> processPasswordSubmitInput(action)
+            is PasswordInput -> processPasswordInput(action)
+            is PasswordSubmitInput -> processPasswordSubmitInput(action)
             is ScreenAction.OnAuthFieldChange -> processAuthFieldChange()
         }
     }
 
-    private fun processUsernameInput(action: ScreenAction.UsernameInput) {
+    private fun processUsernameInput(action: UsernameInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
                 username = action.value
@@ -52,7 +56,7 @@ class AuthViewModel(
         }
     }
 
-    private fun processPasswordInput(action: ScreenAction.PasswordInput) {
+    private fun processPasswordInput(action: PasswordInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
                 password = action.value
@@ -60,10 +64,10 @@ class AuthViewModel(
         }
     }
 
-    private fun processPasswordSubmitInput(action: ScreenAction.PasswordSubmitInput) {
+    private fun processPasswordSubmitInput(action: PasswordSubmitInput) {
         _screenState.update { currentValue ->
             currentValue.copy(
-                passwordSubmit = action.value
+                passwordSubmit = action.value,
             )
         }
     }
@@ -119,7 +123,7 @@ class AuthViewModel(
             }
             .onEach {
                 setLoadingState(ScreenLoadingState.Content)
-                navigate(NavigationScreen.Home)
+                navigator.navigate(NavigationScreen.Home)
             }
             .launchIn(viewModelScope)
     }

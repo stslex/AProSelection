@@ -4,10 +4,17 @@ import androidx.annotation.StringRes
 import com.stslex.aproselection.feature.auth.R
 
 enum class AuthFieldsState(
-    @StringRes val buttonResId: Int
+    @StringRes val buttonResId: Int,
+    @StringRes val titleResId: Int
 ) {
-    AUTH(R.string.auth),
-    REGISTER(R.string.register);
+    AUTH(
+        buttonResId = R.string.auth_button_choose_log_in,
+        titleResId = R.string.auth_title_auth
+    ),
+    REGISTER(
+        buttonResId = R.string.auth_button_choose_register,
+        titleResId = R.string.auth_title_register
+    );
 
     val inverse: AuthFieldsState
         get() = when (this) {

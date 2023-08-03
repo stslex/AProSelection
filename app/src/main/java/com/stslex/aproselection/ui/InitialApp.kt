@@ -1,27 +1,34 @@
 package com.stslex.aproselection.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import com.stslex.aproselection.core.ui.theme.AppTheme
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.navigation.NavHostController
+import com.stslex.aproselection.core.ui.navigation.destination.AppDestination
 import com.stslex.aproselection.navigation.NavigationHost
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun InitialApp() {
-    val navController = rememberNavController()
+fun InitialApp(
+    navController: NavHostController
+) {
+    val viewModel: InitialAppViewModel = koinViewModel()
+    val isInitialAuth by remember {
+        viewModel.isInitialAuth
+    }.collectAsState()
 
-    Box {
-        NavigationHost(
-            navController = navController,
-        )
+    LaunchedEffect(Unit) {
+        viewModel.init()
     }
-}
 
-@Preview(showBackground = true)
-@Composable
-fun InitialAppPreview() {
-    AppTheme {
-        InitialApp()
-    }
+    AppDestination
+        .getStartDestination(isInitialAuth)
+        ?.let { destination ->
+            NavigationHost(
+                navController = navController,
+                startDestination = destination
+            )
+        }
 }

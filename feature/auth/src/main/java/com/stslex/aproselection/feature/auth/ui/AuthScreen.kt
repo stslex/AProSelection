@@ -1,39 +1,41 @@
 package com.stslex.aproselection.feature.auth.ui
 
-import androidx.compose.animation.AnimatedVisibility
+import android.annotation.SuppressLint
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.stslex.aproselection.core.ui.components.ErrorSnackbar
+import com.stslex.aproselection.core.ui.theme.AppDimens
+import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.feature.auth.R
+import com.stslex.aproselection.feature.auth.ui.components.AuthBottomText
+import com.stslex.aproselection.feature.auth.ui.components.AuthFieldsColumn
+import com.stslex.aproselection.feature.auth.ui.components.AuthTitle
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.AuthScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.rememberAuthScreenState
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.UsernameTextFieldState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun AuthScreen(
     state: AuthScreenState,
@@ -47,14 +49,10 @@ fun AuthScreen(
     ) {
         AuthScreenContent(state)
         SnackbarHost(
-            modifier = Modifier
-                .padding(16.dp)
-                .align(Alignment.BottomCenter),
+            modifier = Modifier.align(Alignment.BottomCenter),
             hostState = state.snackbarHostState
         ) { snackbarData ->
-            Snackbar {
-                Text(text = snackbarData.visuals.message)
-            }
+            ErrorSnackbar(snackbarData)
         }
     }
     if (state.screenLoadingState == ScreenLoadingState.Loading) {
@@ -74,113 +72,72 @@ fun AuthScreenContent(
     state: AuthScreenState,
     modifier: Modifier = Modifier
 ) {
-
-    val buttonRes by remember {
-        derivedStateOf { state.authFieldsState.inverse.buttonResId }
-    }
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(AppDimens.Padding.big)
     ) {
-        AuthUsernameTextField(
-            inputUsername = state.username,
-            onTextChange = state::onUsernameChange
+        AuthTitle(
+            modifier = Modifier.align(Alignment.TopCenter),
+            state = state.authFieldsState
         )
-        Divider(Modifier.padding(16.dp))
-        AuthPasswordTextField(
-            inputPassword = state.password,
-            onTextChange = state::onPasswordChange
+        AuthFieldsColumn(
+            modifier = Modifier.align(Alignment.Center),
+            state = state
         )
-        AnimatedVisibility(
-            visible = state.isRegisterState
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(8.dp))
-                AuthPasswordTextField(
-                    inputPassword = state.passwordSubmit,
-                    onTextChange = state::onPasswordSubmitChange
-                )
-            }
-        }
-        Divider(Modifier.padding(16.dp))
-        ElevatedButton(
-            onClick = state::onSubmitClicked,
-            enabled = state.isFieldsValid
-        ) {
-            Text(
-                text = "submit",
-                style = MaterialTheme.typography.headlineMedium
-            )
-        }
-        Divider(Modifier.padding(16.dp))
-        TextButton(
+        AuthBottomText(
+            modifier = Modifier
+                .align(Alignment.BottomCenter),
+            authFieldsState = state.authFieldsState,
             onClick = state::onAuthFieldChange
-        ) {
-            Text(
-                text = stringResource(id = buttonRes),
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
+        )
     }
 }
 
 @Composable
 fun AuthUsernameTextField(
-    inputUsername: String,
-    onTextChange: (String) -> Unit,
+    state: UsernameTextFieldState,
     modifier: Modifier = Modifier
 ) {
     TextField(
-        modifier = modifier,
-        value = inputUsername,
-        onValueChange = { value ->
-            if (inputUsername != value) {
-                onTextChange(value)
-            }
-        },
+        modifier = modifier
+            .fillMaxWidth(),
+        value = state.text,
+        onValueChange = state::onTextChange,
         singleLine = true,
         label = {
-            Text(text = "username")
-        }
-    )
-}
-
-@Composable
-fun AuthPasswordTextField(
-    inputPassword: String,
-    onTextChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        modifier = modifier,
-        value = inputPassword,
-        onValueChange = { value ->
-            if (inputPassword != value) {
-                onTextChange(value)
-            }
+            Text(
+                text = stringResource(id = R.string.auth_username_text)
+            )
         },
-        singleLine = true,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
         supportingText = {
-            Text(text = "enter password")
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    text = state.supportingEndText
+                )
+            }
         },
-        visualTransformation = PasswordVisualTransformation(),
-        label = {
-            Text(text = "password")
-        }
     )
 }
 
-@Preview(device = "id:pixel_6", showSystemUi = true, showBackground = true)
+@Preview(
+    device = "id:pixel_6", showSystemUi = true, showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 @Composable
 fun AuthScreenPreview() {
-    AuthScreen(
-        state = rememberAuthScreenState(
-            screenStateFlow = { MutableStateFlow(ScreenState()) },
-            screenEventFlow = { MutableSharedFlow() },
-            processAction = {}
+    AppTheme {
+        AuthScreen(
+            state = rememberAuthScreenState(
+                screenStateFlow = { MutableStateFlow(ScreenState()) },
+                screenEventFlow = { MutableSharedFlow() },
+                processAction = {}
+            )
         )
-    )
+    }
 }
