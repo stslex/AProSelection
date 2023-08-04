@@ -2,9 +2,9 @@ package com.stslex.aproselection.ui
 
 import androidx.lifecycle.viewModelScope
 import com.stslex.aproselection.controller.AuthController
+import com.stslex.aproselection.core.navigation.destination.NavigationScreen
+import com.stslex.aproselection.core.navigation.navigator.Navigator
 import com.stslex.aproselection.core.ui.base.BaseViewModel
-import com.stslex.aproselection.core.ui.navigation.destination.NavigationScreen
-import com.stslex.aproselection.core.ui.navigation.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

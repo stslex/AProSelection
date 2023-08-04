@@ -4,6 +4,7 @@ import android.app.Application
 import com.stslex.aproselection.controller.AuthController
 import com.stslex.aproselection.core.datastore.coreDataStoreModule
 import com.stslex.aproselection.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
+import com.stslex.aproselection.core.user.di.moduleCoreUser
 import com.stslex.aproselection.di.appModule
 import com.stslex.aproselection.feature.auth.di.ModuleFeatureAuth.moduleFeatureAuth
 import com.stslex.aproselection.feature.home.di.moduleFeatureHome
@@ -33,6 +34,7 @@ class SelectApplication : Application() {
             modules(
                 appModule,
                 moduleCoreNetwork,
+                moduleCoreUser,
                 coreDataStoreModule,
                 moduleFeatureAuth,
                 moduleFeatureHome,

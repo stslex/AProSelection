@@ -6,8 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.stslex.aproselection.core.navigation.di.moduleCoreNavigation
 import com.stslex.aproselection.core.ui.theme.AppTheme
-import com.stslex.aproselection.di.navigationModule
+import com.stslex.aproselection.di.initialAppModule
 import org.koin.androidx.compose.getKoin
 
 class MainActivity : ComponentActivity() {
@@ -30,9 +31,11 @@ class MainActivity : ComponentActivity() {
     private fun SetupComposeDependencies(
         navController: NavHostController
     ) {
-        val navModule = navigationModule(navController)
         getKoin().loadModules(
-            listOf(navModule)
+            listOf(
+                moduleCoreNavigation(navController),
+                initialAppModule
+            )
         )
     }
 }

@@ -50,4 +50,9 @@ class AppDataStoreImpl(
             }
         }
     }
+
+    override suspend fun clear() {
+        setUuid("")
+        setToken("")
+    }
 }

@@ -4,3 +4,7 @@ plugins {
 }
 
 android.namespace = "com.stslex.aproselection.core.ui"
+
+dependencies {
+    implementation(project(":core:core"))
+}
