@@ -10,4 +10,6 @@ interface AppDataStore {
     suspend fun setUuid(uuid: String)
 
     suspend fun setToken(token: String)
+
+    suspend fun clear()
 }

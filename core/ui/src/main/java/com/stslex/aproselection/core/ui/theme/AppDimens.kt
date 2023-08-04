@@ -10,6 +10,7 @@ object AppDimens {
         val small = 8.dp
         val medium = 16.dp
         val big = 32.dp
+        val large = 64.dp
     }
 
     object Corners {
