@@ -1,9 +1,8 @@
 package com.stslex.aproselection.feature.auth.ui
 
 import androidx.lifecycle.viewModelScope
+import com.stslex.aproselection.core.navigation.navigator.Navigator
 import com.stslex.aproselection.core.ui.base.BaseViewModel
-import com.stslex.aproselection.core.ui.navigation.destination.NavigationScreen
-import com.stslex.aproselection.core.ui.navigation.navigator.Navigator
 import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
 import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
 import com.stslex.aproselection.feature.auth.ui.model.ErrorType
@@ -123,7 +122,7 @@ class AuthViewModel(
             }
             .onEach {
                 setLoadingState(ScreenLoadingState.Content)
-                navigator.navigate(NavigationScreen.Home)
+                navigator.navigate(com.stslex.aproselection.core.navigation.destination.NavigationScreen.Home)
             }
             .launchIn(viewModelScope)
     }

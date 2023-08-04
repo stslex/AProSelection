@@ -2,7 +2,7 @@ package com.stslex.aproselection.controller
 
 import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.client.NetworkClient
-import com.stslex.aproselection.core.ui.core.Logger
+import com.stslex.aproselection.core.core.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow

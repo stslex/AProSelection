@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import com.stslex.aproselection.core.ui.navigation.destination.AppDestination
+import com.stslex.aproselection.core.navigation.destination.AppDestination
 import com.stslex.aproselection.navigation.NavigationHost
 import org.koin.androidx.compose.koinViewModel
 
@@ -23,7 +23,7 @@ fun InitialApp(
         viewModel.init()
     }
 
-    AppDestination
+    com.stslex.aproselection.core.navigation.destination.AppDestination
         .getStartDestination(isInitialAuth)
         ?.let { destination ->
             NavigationHost(
