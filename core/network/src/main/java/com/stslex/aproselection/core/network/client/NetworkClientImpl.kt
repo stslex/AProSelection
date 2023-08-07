@@ -3,21 +3,25 @@ package com.stslex.aproselection.core.network.client
 import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.BuildConfig
 import com.stslex.aproselection.core.network.clients.auth.model.TokenResponse
+import com.stslex.aproselection.core.network.model.ApiError
+import com.stslex.aproselection.core.network.model.ApiErrorRespond
+import com.stslex.aproselection.core.network.model.ApiErrorType
+import com.stslex.aproselection.core.network.model.ApiErrorTypeRow
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
-import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.HttpRequest
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
 import io.ktor.http.URLProtocol
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
@@ -80,14 +84,7 @@ class NetworkClientImpl(
             }
 
             HttpResponseValidator {
-                handleResponseExceptionWithRequest { exception, request ->
-                    val clientException = exception as? ClientRequestException
-                        ?: return@handleResponseExceptionWithRequest
-                    val exceptionResponse = clientException.response
-                    if (exceptionResponse.status == HttpStatusCode.Unauthorized) {
-                        regenerateToken()
-                    }
-                }
+                handleResponseExceptionWithRequest(errorParser)
             }
         }
 
@@ -104,6 +101,25 @@ class NetworkClientImpl(
                     contentType(ContentType.Application.Json)
                 }
                 bearerAuth(token = token.value)
+            }
+        }
+
+    private val errorParser: suspend (Throwable, HttpRequest) -> Unit
+        get() = { exception, _ ->
+            val clientException = exception as? ResponseException
+            val respond = clientException?.response?.body<ApiErrorRespond>()
+            val apiErrorType = ApiErrorTypeRow
+                .getByMessageCode(respond?.messageCode)
+                .apiErrorType
+
+            val apiError = ApiError(
+                message = respond?.message.orEmpty(),
+                type = apiErrorType
+            )
+
+            when (apiError.type) {
+                is ApiErrorType.Unauthorized.Token -> regenerateToken()
+                else -> throw apiError
             }
         }
 
