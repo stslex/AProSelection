@@ -7,6 +7,10 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+permissions:
+  checks: write
+  pull-requests: write
+
 jobs:
   build:
 
@@ -38,3 +42,9 @@ jobs:
 
       - name: Junit tests with Gradle
         run: ./gradlew testDebugUnitTest
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: "**/build/test-results/**/*.xml"

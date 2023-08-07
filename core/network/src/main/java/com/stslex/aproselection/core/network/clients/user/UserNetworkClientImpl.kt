@@ -3,12 +3,12 @@ package com.stslex.aproselection.core.network.clients.user
 import com.stslex.aproselection.core.network.client.NetworkClient
 import com.stslex.aproselection.core.network.clients.user.model.UpdateUserInfoBody
 import com.stslex.aproselection.core.network.clients.user.model.UserResponse
-import com.stslex.aproselection.core.network.model.PagingRequest
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.appendPathSegments
+import io.ktor.util.AttributeKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -22,12 +22,10 @@ class UserNetworkClientImpl(
     ): List<UserResponse> = withContext(Dispatchers.IO) {
         networkClient.apiClient.get {
             url.appendPathSegments("user", "list")
-            setBody(
-                PagingRequest(
-                    pageSize = pageSize,
-                    pageNumber = page
-                )
-            )
+            setAttributes {
+                put(AttributeKey("page_size"), pageSize)
+                put(AttributeKey("page_number"), page)
+            }
         }.body()
     }
 
