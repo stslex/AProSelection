@@ -10,10 +10,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import com.stslex.aproselection.core.network.model.ApiError
 import com.stslex.aproselection.core.ui.ext.CollectAsEvent
 import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
-import com.stslex.aproselection.feature.auth.ui.model.ErrorType
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
+import com.stslex.aproselection.feature.auth.ui.model.SnackbarActionType
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenEvent
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
@@ -80,13 +81,22 @@ fun rememberAuthScreenState(
 
     screenEventFlow().CollectAsEvent { event ->
         when (event) {
-            is ScreenEvent.Error -> when (val error = event.errorType) {
-                is ErrorType.UnResolve -> {
-                    snackbarHostState.showSnackbar(error.throwable.message.orEmpty())
-                }
+            is ScreenEvent.Error -> when (val error = event.error) {
+                is ApiError -> snackbarHostState.showSnackbar(
+                    message = error.message,
+                    actionLabel = SnackbarActionType.ERROR.action
+                )
 
-                is ErrorType.Api -> Unit // TODO add api parse error logic
+                else -> snackbarHostState.showSnackbar(
+                    message = "smth went wrong",
+                    actionLabel = SnackbarActionType.ERROR.action
+                )
             }
+
+            is ScreenEvent.SuccessRegistered -> snackbarHostState.showSnackbar(
+                message = "Success",
+                actionLabel = SnackbarActionType.SUCCESS.action
+            )
         }
     }
 

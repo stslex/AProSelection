@@ -6,6 +6,6 @@ interface AuthController {
 
     val isAuth: StateFlow<Boolean?>
 
-    fun init()
+    suspend fun init()
 }
 

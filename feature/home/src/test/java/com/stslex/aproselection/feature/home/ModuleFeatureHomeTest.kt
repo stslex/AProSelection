@@ -1,10 +1,9 @@
-package com.stslex.aproselection.feature.auth
+package com.stslex.aproselection.feature.home
 
 import android.content.Context
 import com.stslex.aproselection.core.datastore.AppDataStore
-import com.stslex.aproselection.core.navigation.navigator.Navigator
-import com.stslex.aproselection.core.network.clients.auth.AuthNetworkClient
-import com.stslex.aproselection.feature.auth.di.ModuleFeatureAuth.moduleFeatureAuth
+import com.stslex.aproselection.core.user.data.repository.UserRepository
+import com.stslex.aproselection.feature.home.di.moduleFeatureHome
 import org.junit.Test
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.KoinApplication
@@ -14,16 +13,15 @@ import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.mockito.Mockito
 
-class ModuleFeatureAuthTest : KoinTest {
+class ModuleFeatureHomeTest : KoinTest {
 
     @Test
     fun checkKoinModules() {
         koinApplication {
             androidContext(Mockito.mock(Context::class.java))
-            load<Navigator>()
-            load<AuthNetworkClient>()
+            load<UserRepository>()
             load<AppDataStore>()
-            modules(moduleFeatureAuth)
+            modules(moduleFeatureHome)
             checkModules()
         }
     }

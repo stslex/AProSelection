@@ -20,7 +20,7 @@ class BasePagingSource<T : Any>(
 
             val photos = getItems(pageNumber, pageSize)
             val prevKey = pageNumber.takeIf { it > INITIAL_PAGE_NUMBER }?.dec()
-            val nextKey = pageNumber.takeIf { photos.isNotEmpty() }?.inc()
+            val nextKey = pageNumber.takeIf { photos.size == pageSize }?.inc()
             LoadResult.Page(
                 data = photos,
                 prevKey = prevKey,
@@ -32,6 +32,6 @@ class BasePagingSource<T : Any>(
     }
 
     companion object {
-        const val INITIAL_PAGE_NUMBER = 1
+        const val INITIAL_PAGE_NUMBER = 0
     }
 }

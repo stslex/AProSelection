@@ -5,10 +5,17 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.stslex.aproselection.core.core.Logger
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.coroutines.coroutineContext
 
 class AppDataStoreImpl(
     private val context: Context
@@ -21,19 +28,13 @@ class AppDataStoreImpl(
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(DATA_STORE_KEY)
     }
 
-    override val uuid: Flow<String>
-        get() = context.dataStore.data
-            .map { prefs ->
-                prefs[UUID_KEY].orEmpty()
-            }
-            .flowOn(Dispatchers.IO)
+    private val _uuid = MutableStateFlow("")
+    override val uuid: StateFlow<String>
+        get() = _uuid.asStateFlow()
 
-    override val token: Flow<String>
-        get() = context.dataStore.data
-            .map { prefs ->
-                prefs[TOKEN_KEY].orEmpty()
-            }
-            .flowOn(Dispatchers.IO)
+    private val _token = MutableStateFlow("")
+    override val token: StateFlow<String>
+        get() = _token.asStateFlow()
 
     override suspend fun setUuid(uuid: String) {
         context.dataStore.updateData { prefs ->
@@ -49,6 +50,19 @@ class AppDataStoreImpl(
                 set(TOKEN_KEY, token)
             }
         }
+    }
+
+    override suspend fun init() {
+        context.dataStore.data
+            .catch { error ->
+                Logger.exception(error)
+            }
+            .onEach { prefs ->
+                _uuid.value = prefs[UUID_KEY].orEmpty()
+                _token.value = prefs[TOKEN_KEY].orEmpty()
+            }
+            .flowOn(Dispatchers.IO)
+            .launchIn(CoroutineScope(coroutineContext))
     }
 
     override suspend fun clear() {

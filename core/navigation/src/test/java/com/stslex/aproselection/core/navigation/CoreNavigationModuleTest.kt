@@ -1,8 +1,8 @@
-package com.stslex.aproselection.core.network
+package com.stslex.aproselection.core.navigation
 
 import android.content.Context
-import com.stslex.aproselection.core.datastore.coreDataStoreModule
-import com.stslex.aproselection.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
+import androidx.navigation.NavHostController
+import com.stslex.aproselection.core.navigation.di.moduleCoreNavigation
 import org.junit.Test
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.koinApplication
@@ -10,16 +10,15 @@ import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.mockito.Mockito
 
-class DiKoinModuleTest : KoinTest {
+class CoreNavigationModuleTest : KoinTest {
 
     @Test
     fun checkKoinModules() {
+        val navController = Mockito.mock(NavHostController::class.java)
+
         koinApplication {
             androidContext(Mockito.mock(Context::class.java))
-            modules(
-                moduleCoreNetwork,
-                coreDataStoreModule
-            )
+            modules(moduleCoreNavigation(navController))
             checkModules()
         }
     }

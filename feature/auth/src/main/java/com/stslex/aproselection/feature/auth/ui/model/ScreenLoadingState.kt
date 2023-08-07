@@ -7,15 +7,6 @@ sealed interface ScreenLoadingState {
     data object Content : ScreenLoadingState
 
     data class Error(
-        val error: ErrorType
+        val error: Throwable
     ) : ScreenLoadingState
-}
-
-sealed interface ErrorType {
-
-    sealed interface Api : ErrorType
-
-    data class UnResolve(
-        val throwable: Throwable
-    ) : ErrorType
 }
