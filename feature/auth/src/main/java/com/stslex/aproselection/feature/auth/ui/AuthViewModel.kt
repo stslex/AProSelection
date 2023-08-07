@@ -5,7 +5,6 @@ import com.stslex.aproselection.core.navigation.navigator.Navigator
 import com.stslex.aproselection.core.ui.base.BaseViewModel
 import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
 import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
-import com.stslex.aproselection.feature.auth.ui.model.ErrorType
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordInput
@@ -96,12 +95,18 @@ class AuthViewModel(
                 password = state.password
             )
             .catch { throwable ->
-                _screenEvents.emit(ScreenEvent.Error(ErrorType.UnResolve(throwable)))
+                _screenEvents.emit(ScreenEvent.Error(throwable))
                 setLoadingState(ScreenLoadingState.Content)
                 handleError(throwable)
             }
             .onEach {
-                setLoadingState(ScreenLoadingState.Content)
+                _screenState.update { currentState ->
+                    currentState.copy(
+                        screenLoadingState = ScreenLoadingState.Content,
+                        authFieldsState = AuthFieldsState.AUTH
+                    )
+                }
+                _screenEvents.emit(ScreenEvent.SuccessRegistered)
             }
             .launchIn(viewModelScope)
     }
@@ -116,7 +121,7 @@ class AuthViewModel(
                 password = state.password
             )
             .catch { throwable ->
-                _screenEvents.emit(ScreenEvent.Error(ErrorType.UnResolve(throwable)))
+                _screenEvents.emit(ScreenEvent.Error(throwable))
                 setLoadingState(ScreenLoadingState.Content)
                 handleError(throwable)
             }

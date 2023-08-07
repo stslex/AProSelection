@@ -74,6 +74,7 @@ ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version
 ktor-client-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-encoding = { group = "io.ktor", name = "ktor-client-encoding", version.ref = "ktor" }
 ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 brotli = { module = "org.brotli:dec", version = "0.1.2" }
@@ -135,7 +136,8 @@ ktor = [
     "ktor-serialization-kotlinx-json",
     "brotli",
     "ktor-client-logging",
-    "ktor-client-android"
+    "ktor-client-android",
+    "ktor-client-auth"
 ]
 
 koin = [

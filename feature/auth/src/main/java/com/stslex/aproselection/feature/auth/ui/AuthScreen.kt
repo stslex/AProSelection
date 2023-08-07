@@ -21,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.components.ErrorSnackbar
+import com.stslex.aproselection.core.ui.components.SuccessSnackbar
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.core.ui.theme.AppTheme
 import com.stslex.aproselection.feature.auth.R
@@ -28,6 +29,7 @@ import com.stslex.aproselection.feature.auth.ui.components.AuthBottomText
 import com.stslex.aproselection.feature.auth.ui.components.AuthFieldsColumn
 import com.stslex.aproselection.feature.auth.ui.components.AuthTitle
 import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
+import com.stslex.aproselection.feature.auth.ui.model.SnackbarActionType
 import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.AuthScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.rememberAuthScreenState
@@ -52,7 +54,11 @@ fun AuthScreen(
             modifier = Modifier.align(Alignment.BottomCenter),
             hostState = state.snackbarHostState
         ) { snackbarData ->
-            ErrorSnackbar(snackbarData)
+            when (SnackbarActionType.getByAction(snackbarData.visuals.actionLabel)) {
+                SnackbarActionType.ERROR -> ErrorSnackbar(snackbarData)
+                SnackbarActionType.SUCCESS -> SuccessSnackbar(snackbarData)
+                SnackbarActionType.NONE -> return@SnackbarHost
+            }
         }
     }
     if (state.screenLoadingState == ScreenLoadingState.Loading) {

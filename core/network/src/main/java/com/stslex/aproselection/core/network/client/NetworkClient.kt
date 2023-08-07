@@ -4,9 +4,7 @@ import io.ktor.client.HttpClient
 
 interface NetworkClient {
 
-    val client: HttpClient
-
     val apiClient: HttpClient
 
-    suspend fun regenerateToken()
+    suspend fun regenerateToken(): String
 }
