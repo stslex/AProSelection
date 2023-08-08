@@ -7,4 +7,14 @@ data class UserUi(
     val uuid: String,
     val username: String,
     val nickname: String
-)
+) {
+
+    companion object {
+
+        val EMPTY = UserUi(
+            uuid = "",
+            username = "",
+            nickname = ""
+        )
+    }
+}
