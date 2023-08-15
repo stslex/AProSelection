@@ -42,8 +42,8 @@ fun MenuIcon(
     roundCorners: Dp = 4.dp,
     containerColorOpen: Color = MaterialTheme.colorScheme.surface,
     contentColorOpen: Color = MaterialTheme.colorScheme.onSurface,
-    containerColorClose: Color = MaterialTheme.colorScheme.surface,
-    contentColorClose: Color = MaterialTheme.colorScheme.onSurface,
+    containerColorClose: Color = containerColorOpen,
+    contentColorClose: Color = contentColorOpen,
     animationDuration: Int = 900
 ) {
     val localHaptic = LocalHapticFeedback.current

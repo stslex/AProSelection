@@ -19,4 +19,9 @@ object AppDimens {
         val medium = 10.dp
         val big = 15.dp
     }
+
+    object Size {
+
+        val toolbar = 64.dp
+    }
 }

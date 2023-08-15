@@ -22,5 +22,5 @@ object NavExt {
         }
 
     val NavController.isAuth: Boolean
-        get() = currentDestination?.route == AppDestination.AUTH.route
+        get() = currentDestination?.route != AppDestination.AUTH.route
 }
