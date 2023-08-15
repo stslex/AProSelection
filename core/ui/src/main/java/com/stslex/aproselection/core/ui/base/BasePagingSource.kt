@@ -18,13 +18,14 @@ class BasePagingSource<T : Any>(
             val pageNumber = params.key ?: INITIAL_PAGE_NUMBER
             val pageSize = params.loadSize
 
-            val photos = getItems(pageNumber, pageSize)
+            val page = getItems(pageNumber, pageSize)
+
             val prevKey = pageNumber.takeIf { it > INITIAL_PAGE_NUMBER }?.dec()
-            val nextKey = pageNumber.takeIf { photos.size == pageSize }?.inc()
+            val nextKey = pageNumber.takeIf { page.size == pageSize }?.inc()
             LoadResult.Page(
-                data = photos,
+                data = page,
                 prevKey = prevKey,
-                nextKey = nextKey
+                nextKey = nextKey,
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
