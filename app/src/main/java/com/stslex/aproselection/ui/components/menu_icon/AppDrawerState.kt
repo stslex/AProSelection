@@ -1,9 +1,9 @@
 package com.stslex.aproselection.ui.components.menu_icon
 
-enum class MenuIconState {
+enum class AppDrawerState {
     OPEN, CLOSE;
 
-    fun inverse(): MenuIconState = when (this) {
+    fun inverse(): AppDrawerState = when (this) {
         OPEN -> CLOSE
         CLOSE -> OPEN
     }

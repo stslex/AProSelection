@@ -10,17 +10,17 @@ appcompat = "1.6.1"
 immutableCollection = "0.3.5"
 
 composeCompiler = "1.5.1"
-composeBom = "2023.06.01"
-composeNavigation = "2.6.0"
+composeBom = "2023.08.00"
+composeNavigation = "2.7.0"
 accompanist = "0.30.0"
-coilCompose = "2.2.2"
+coilCompose = "2.4.0"
 
-ktor = "2.2.4"
+ktor = "2.3.3"
 ktorAndroid = "2.2.4"
 okhttp3 = "4.11.0"
 
 koin = "3.3.0"
-koinAndroid = "3.3.1"
+koinAndroid = "3.4.0"
 
 junit = "4.13.2"
 androidxJunit = "1.1.5"
@@ -124,6 +124,7 @@ compose = [
     "androidx-compose-tooling-preview",
     "androidx-compose-foundation",
     "androidx-compose-paging",
+    "androidx-compose-material",
     "coil-compose"
 ]
 

@@ -14,9 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,59 +35,56 @@ import kotlin.math.sqrt
 
 @Composable
 fun MenuIcon(
-    onClick: (MenuIconState) -> Unit,
+    drawerState: AppDrawerState,
+    onClick: (AppDrawerState) -> Unit,
     modifier: Modifier = Modifier,
     iconSize: Dp = 32.dp,
     roundCorners: Dp = 4.dp,
     containerColorOpen: Color = MaterialTheme.colorScheme.surface,
     contentColorOpen: Color = MaterialTheme.colorScheme.onSurface,
-    containerColorClose: Color = MaterialTheme.colorScheme.surface,
-    contentColorClose: Color = MaterialTheme.colorScheme.onSurface,
+    containerColorClose: Color = containerColorOpen,
+    contentColorClose: Color = contentColorOpen,
     animationDuration: Int = 900
 ) {
     val localHaptic = LocalHapticFeedback.current
-    var currentState by remember {
-        mutableStateOf(MenuIconState.OPEN)
-    }
 
     val containerColor by animateColorAsState(
-        targetValue = when (currentState) {
-            MenuIconState.OPEN -> containerColorOpen
-            MenuIconState.CLOSE -> containerColorClose
+        targetValue = when (drawerState) {
+            AppDrawerState.OPEN -> containerColorOpen
+            AppDrawerState.CLOSE -> containerColorClose
         },
         animationSpec = tween(animationDuration),
         label = "animContainerColor"
     )
 
     val contentColor by animateColorAsState(
-        targetValue = when (currentState) {
-            MenuIconState.OPEN -> contentColorOpen
-            MenuIconState.CLOSE -> contentColorClose
+        targetValue = when (drawerState) {
+            AppDrawerState.OPEN -> contentColorOpen
+            AppDrawerState.CLOSE -> contentColorClose
         },
         animationSpec = tween(animationDuration),
         label = "animContentColor"
     )
 
     val animProgress by animateFloatAsState(
-        targetValue = when (currentState) {
-            MenuIconState.OPEN -> 0f
-            MenuIconState.CLOSE -> 1f
+        targetValue = when (drawerState) {
+            AppDrawerState.CLOSE -> 0f
+            AppDrawerState.OPEN -> 1f
         },
         animationSpec = tween(animationDuration),
         label = "animState"
     )
 
-    fun onClick() {
-        localHaptic.performHapticFeedback(HapticFeedbackType.LongPress)
-        onClick(currentState)
-        currentState = currentState.inverse()
-    }
-
     Canvas(
         modifier = modifier
             .size(iconSize)
             .clip(RoundedCornerShape(roundCorners))
-            .clickable(onClick = remember { { onClick() } })
+            .clickable(
+                onClick = {
+                    localHaptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    onClick(drawerState.inverse())
+                }
+            )
             .background(containerColor)
             .padding(roundCorners)
     ) {
@@ -169,14 +163,16 @@ fun MenuIconPreview() {
             MenuIcon(
                 onClick = {},
                 iconSize = 200.dp,
-                roundCorners = 16.dp
+                roundCorners = 16.dp,
+                drawerState = AppDrawerState.OPEN
             )
 
             MenuIcon(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(64.dp),
-                onClick = {}
+                onClick = {},
+                drawerState = AppDrawerState.OPEN
             )
         }
     }
