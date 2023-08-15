@@ -34,7 +34,7 @@ import com.stslex.aproselection.core.ui.ext.noRippleClick
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.navigation.NavigationHost
 import com.stslex.aproselection.ui.components.AppToolbar
-import com.stslex.aproselection.ui.components.menu_icon.MenuIconState
+import com.stslex.aproselection.ui.components.menu_icon.AppDrawerState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -74,21 +74,21 @@ fun AppContainer(
     val screenWidth = configuration.screenWidthDp.dp
 
     var drawerState by remember {
-        mutableStateOf(MenuIconState.CLOSE)
+        mutableStateOf(AppDrawerState.CLOSE)
     }
 
     val drawerSlide by animateDpAsState(
         targetValue = when (drawerState) {
-            MenuIconState.OPEN -> 0.dp
-            MenuIconState.CLOSE -> -screenWidth * 0.3f
+            AppDrawerState.OPEN -> 0.dp
+            AppDrawerState.CLOSE -> -screenWidth * 0.3f
         },
         animationSpec = tween(900)
     )
 
     BackHandler(
-        enabled = drawerState == MenuIconState.OPEN
+        enabled = drawerState == AppDrawerState.OPEN
     ) {
-        drawerState = MenuIconState.CLOSE
+        drawerState = AppDrawerState.CLOSE
     }
 
     Box(
@@ -104,12 +104,12 @@ fun AppContainer(
             content = content
         )
 
-        if (drawerState == MenuIconState.OPEN) {
+        if (drawerState == AppDrawerState.OPEN) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .noRippleClick {
-                        drawerState = MenuIconState.CLOSE
+                        drawerState = AppDrawerState.CLOSE
                     }
                     .background(
                         MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)

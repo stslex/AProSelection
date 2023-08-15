@@ -35,8 +35,8 @@ import kotlin.math.sqrt
 
 @Composable
 fun MenuIcon(
-    drawerState: MenuIconState,
-    onClick: (MenuIconState) -> Unit,
+    drawerState: AppDrawerState,
+    onClick: (AppDrawerState) -> Unit,
     modifier: Modifier = Modifier,
     iconSize: Dp = 32.dp,
     roundCorners: Dp = 4.dp,
@@ -50,8 +50,8 @@ fun MenuIcon(
 
     val containerColor by animateColorAsState(
         targetValue = when (drawerState) {
-            MenuIconState.OPEN -> containerColorOpen
-            MenuIconState.CLOSE -> containerColorClose
+            AppDrawerState.OPEN -> containerColorOpen
+            AppDrawerState.CLOSE -> containerColorClose
         },
         animationSpec = tween(animationDuration),
         label = "animContainerColor"
@@ -59,8 +59,8 @@ fun MenuIcon(
 
     val contentColor by animateColorAsState(
         targetValue = when (drawerState) {
-            MenuIconState.OPEN -> contentColorOpen
-            MenuIconState.CLOSE -> contentColorClose
+            AppDrawerState.OPEN -> contentColorOpen
+            AppDrawerState.CLOSE -> contentColorClose
         },
         animationSpec = tween(animationDuration),
         label = "animContentColor"
@@ -68,8 +68,8 @@ fun MenuIcon(
 
     val animProgress by animateFloatAsState(
         targetValue = when (drawerState) {
-            MenuIconState.CLOSE -> 0f
-            MenuIconState.OPEN -> 1f
+            AppDrawerState.CLOSE -> 0f
+            AppDrawerState.OPEN -> 1f
         },
         animationSpec = tween(animationDuration),
         label = "animState"
@@ -164,7 +164,7 @@ fun MenuIconPreview() {
                 onClick = {},
                 iconSize = 200.dp,
                 roundCorners = 16.dp,
-                drawerState = MenuIconState.OPEN
+                drawerState = AppDrawerState.OPEN
             )
 
             MenuIcon(
@@ -172,7 +172,7 @@ fun MenuIconPreview() {
                     .align(Alignment.BottomCenter)
                     .padding(64.dp),
                 onClick = {},
-                drawerState = MenuIconState.OPEN
+                drawerState = AppDrawerState.OPEN
             )
         }
     }

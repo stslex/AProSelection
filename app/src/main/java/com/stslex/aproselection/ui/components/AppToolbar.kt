@@ -15,13 +15,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.ui.components.menu_icon.AppDrawerState
 import com.stslex.aproselection.ui.components.menu_icon.MenuIcon
-import com.stslex.aproselection.ui.components.menu_icon.MenuIconState
 
 @Composable
 fun AppToolbar(
-    drawerState: MenuIconState,
-    onClick: (MenuIconState) -> Unit,
+    drawerState: AppDrawerState,
+    onClick: (AppDrawerState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -57,7 +57,7 @@ fun AppToolbarPreviewLight() {
         ) {
             AppToolbar(
                 onClick = {},
-                drawerState = MenuIconState.OPEN
+                drawerState = AppDrawerState.OPEN
             )
         }
     }
@@ -72,7 +72,7 @@ fun AppToolbarPreviewDark() {
         ) {
             AppToolbar(
                 onClick = {},
-                drawerState = MenuIconState.OPEN
+                drawerState = AppDrawerState.OPEN
             )
         }
     }
