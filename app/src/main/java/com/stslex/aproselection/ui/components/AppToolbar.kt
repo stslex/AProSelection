@@ -16,6 +16,7 @@ import com.stslex.aproselection.ui.components.menu_icon.MenuIconState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppToolbar(
+    drawerState: MenuIconState,
     onClick: (MenuIconState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -25,7 +26,10 @@ fun AppToolbar(
             Text(text = "title")
         },
         navigationIcon = {
-            MenuIcon(onClick = onClick)
+            MenuIcon(
+                onClick = onClick,
+                drawerState = drawerState
+            )
         }
     )
 }
@@ -37,7 +41,10 @@ fun AppToolbarPreviewLight() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            AppToolbar(onClick = {})
+            AppToolbar(
+                onClick = {},
+                drawerState = MenuIconState.OPEN
+            )
         }
     }
 }
@@ -49,7 +56,10 @@ fun AppToolbarPreviewDark() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            AppToolbar(onClick = {})
+            AppToolbar(
+                onClick = {},
+                drawerState = MenuIconState.OPEN
+            )
         }
     }
 }

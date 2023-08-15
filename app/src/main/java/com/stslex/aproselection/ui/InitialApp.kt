@@ -1,5 +1,9 @@
 package com.stslex.aproselection.ui
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +51,12 @@ fun InitialApp(
         mutableStateOf(MenuIconState.CLOSE)
     }
 
+    BackHandler(
+        enabled = drawerState == MenuIconState.OPEN
+    ) {
+        drawerState = MenuIconState.CLOSE
+    }
+
     AppDestination
         .getStartDestination(isInitialAuth)
         ?.let { destination ->
@@ -57,7 +67,8 @@ fun InitialApp(
             ) {
                 if (navController.isAuth.not()) {
                     AppToolbar(
-                        onClick = { drawerState = it }
+                        onClick = { drawerState = it },
+                        drawerState = drawerState
                     )
                 }
                 Box(
@@ -68,7 +79,9 @@ fun InitialApp(
                         startDestination = destination
                     )
                     androidx.compose.animation.AnimatedVisibility(
-                        visible = drawerState == MenuIconState.OPEN
+                        visible = drawerState == MenuIconState.OPEN,
+                        enter = slideInHorizontally(tween(900)) { -it },
+                        exit = slideOutHorizontally(tween(900)) { -it }
                     ) {
                         Box(
                             modifier = Modifier
