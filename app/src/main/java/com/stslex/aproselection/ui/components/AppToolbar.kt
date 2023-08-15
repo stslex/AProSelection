@@ -2,10 +2,7 @@ package com.stslex.aproselection.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -13,11 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.ui.components.menu_icon.MenuIcon
+import com.stslex.aproselection.ui.components.menu_icon.MenuIconState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppToolbar(
-    modifier: Modifier = Modifier
+    onClick: (MenuIconState) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -25,10 +25,7 @@ fun AppToolbar(
             Text(text = "title")
         },
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Default.Menu,
-                contentDescription = null
-            )
+            MenuIcon(onClick = onClick)
         }
     )
 }
@@ -40,7 +37,7 @@ fun AppToolbarPreviewLight() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            AppToolbar()
+            AppToolbar(onClick = {})
         }
     }
 }
@@ -52,7 +49,7 @@ fun AppToolbarPreviewDark() {
         Box(
             modifier = Modifier.background(MaterialTheme.colorScheme.background)
         ) {
-            AppToolbar()
+            AppToolbar(onClick = {})
         }
     }
 }

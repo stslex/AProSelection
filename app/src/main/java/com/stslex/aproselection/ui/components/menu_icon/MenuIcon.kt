@@ -1,4 +1,4 @@
-package com.stslex.aproselection.ui.components
+package com.stslex.aproselection.ui.components.menu_icon
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -24,7 +24,6 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -32,24 +31,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.ui.components.menu_icon.MenuIconLineType.BOTTOM
+import com.stslex.aproselection.ui.components.menu_icon.MenuIconLineType.CENTER
+import com.stslex.aproselection.ui.components.menu_icon.MenuIconLineType.TOP
 import kotlin.math.sqrt
-
-enum class MenuIconState {
-    OPEN,
-    CLOSE
-}
 
 @Composable
 fun MenuIcon(
-    onClickOpen: () -> Unit,
-    onClickClose: () -> Unit,
+    onClick: (MenuIconState) -> Unit,
     modifier: Modifier = Modifier,
     iconSize: Dp = 32.dp,
     roundCorners: Dp = 4.dp,
     containerColorOpen: Color = MaterialTheme.colorScheme.surface,
     contentColorOpen: Color = MaterialTheme.colorScheme.onSurface,
-    containerColorClose: Color = MaterialTheme.colorScheme.surfaceVariant,
-    contentColorClose: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    containerColorClose: Color = MaterialTheme.colorScheme.surface,
+    contentColorClose: Color = MaterialTheme.colorScheme.onSurface,
+    animationDuration: Int = 900
 ) {
     val localHaptic = LocalHapticFeedback.current
     var currentState by remember {
@@ -61,7 +58,7 @@ fun MenuIcon(
             MenuIconState.OPEN -> containerColorOpen
             MenuIconState.CLOSE -> containerColorClose
         },
-        animationSpec = tween(900),
+        animationSpec = tween(animationDuration),
         label = "animContainerColor"
     )
 
@@ -70,7 +67,7 @@ fun MenuIcon(
             MenuIconState.OPEN -> contentColorOpen
             MenuIconState.CLOSE -> contentColorClose
         },
-        animationSpec = tween(900),
+        animationSpec = tween(animationDuration),
         label = "animContentColor"
     )
 
@@ -79,103 +76,81 @@ fun MenuIcon(
             MenuIconState.OPEN -> 0f
             MenuIconState.CLOSE -> 1f
         },
-        animationSpec = tween(900),
+        animationSpec = tween(animationDuration),
         label = "animState"
     )
+
+    fun onClick() {
+        localHaptic.performHapticFeedback(HapticFeedbackType.LongPress)
+        onClick(currentState)
+        currentState = currentState.inverse()
+    }
 
     Canvas(
         modifier = modifier
             .size(iconSize)
             .clip(RoundedCornerShape(roundCorners))
-            .clickable(
-                onClick = {
-                    localHaptic.performHapticFeedback(HapticFeedbackType.LongPress)
-                    currentState = when (currentState) {
-                        MenuIconState.OPEN -> {
-                            onClickOpen()
-                            MenuIconState.CLOSE
-                        }
-
-                        MenuIconState.CLOSE -> {
-                            onClickClose()
-                            MenuIconState.OPEN
-                        }
-                    }
-                }
-            )
+            .clickable(onClick = remember { { onClick() } })
             .background(containerColor)
             .padding(roundCorners)
     ) {
 
-        val lineHeight = size.height * .3f
-        val lineWidth =
-            (size.width) * (sqrt(2f) * animProgress).coerceAtLeast(1f) - lineHeight * sqrt(2f) * animProgress
+        val lineHeight = size.height * .2f
+
+        val sqrtTwo = sqrt(2f)
+        val rotationPadding = lineHeight * sqrtTwo * animProgress
+        val rotationWidthFract = (sqrtTwo * animProgress).coerceAtLeast(1f)
+        val lineWidth = size.width * rotationWidthFract - rotationPadding
 
         val lineSize = Size(
             width = lineWidth,
             height = lineHeight
         )
 
-        clipRect(
-            left = 0f,
-            right = size.width,
-            top = 0f,
-            bottom = size.height
-        ) {
+        MenuIconLineType.entries.forEach { type ->
+            val currentLineSize = when (type) {
+                CENTER -> lineSize.copy(width = size.width * (1 - animProgress))
+                BOTTOM, TOP -> lineSize
+            }
 
-            for (index in 0 until 3) {
+            val yOffset = when (type) {
+                TOP -> 0f
+                CENTER -> (size.height - lineSize.height) * .5f
+                BOTTOM -> size.height - lineSize.height
+            }
 
-                val currentLineSize = if (index == 1) {
-                    lineSize.copy(
-                        width = size.width * (1 - animProgress)
+            val xOffset = when (type) {
+                CENTER -> size.width * animProgress * .5f
+                BOTTOM, TOP -> lineHeight * animProgress * .5f
+            }
+
+            val offset = Offset(x = xOffset, y = yOffset)
+
+            val pivot = when (type) {
+                TOP -> offset.copy(y = lineHeight * .5f)
+                CENTER -> offset
+                BOTTOM -> offset.copy(y = size.height - lineHeight * .5f)
+            }
+
+            val degrees = when (type) {
+                TOP -> animProgress * 45f
+                CENTER -> 0f
+                BOTTOM -> -animProgress * 45f
+            }
+
+            rotate(
+                degrees = degrees,
+                pivot = pivot
+            ) {
+                drawRoundRect(
+                    color = contentColor,
+                    topLeft = offset,
+                    size = currentLineSize,
+                    cornerRadius = CornerRadius(
+                        x = lineHeight,
+                        y = lineHeight
                     )
-                } else {
-                    lineSize
-                }
-                val y = when (index) {
-                    0 -> 0f
-                    1 -> size.height * .5f - lineSize.height * .5f
-                    2 -> size.height - lineSize.height
-                    else -> 0f
-                }
-                val offset = Offset(
-                    x = if (index == 1) {
-                        size.width * animProgress * .5f
-                    } else {
-                        lineHeight * animProgress * .5f
-                    },
-                    y = y
                 )
-                val pivot = if (index == 0) {
-                    offset.copy(
-                        y = lineHeight * .5f
-                    )
-                } else if (index == 2) {
-                    offset.copy(
-                        y = size.height - lineHeight * .5f
-                    )
-                } else {
-                    offset
-                }
-                rotate(
-                    degrees = when (index) {
-                        0 -> animProgress * 45f
-                        1 -> 0f
-                        2 -> -(animProgress * 45f)
-                        else -> 0f
-                    },
-                    pivot = pivot
-                ) {
-                    drawRoundRect(
-                        color = contentColor,
-                        topLeft = offset,
-                        size = currentLineSize,
-                        cornerRadius = CornerRadius(
-                            x = lineHeight,
-                            y = lineHeight
-                        )
-                    )
-                }
             }
         }
     }
@@ -192,8 +167,7 @@ fun MenuIconPreview() {
             contentAlignment = Alignment.Center
         ) {
             MenuIcon(
-                onClickOpen = {},
-                onClickClose = {},
+                onClick = {},
                 iconSize = 200.dp,
                 roundCorners = 16.dp
             )
@@ -202,8 +176,7 @@ fun MenuIconPreview() {
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(64.dp),
-                onClickOpen = {},
-                onClickClose = {},
+                onClick = {}
             )
         }
     }
