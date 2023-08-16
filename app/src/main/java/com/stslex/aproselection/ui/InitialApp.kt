@@ -1,8 +1,11 @@
 package com.stslex.aproselection.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -82,7 +85,7 @@ fun AppContainer(
             AppDrawerState.OPEN -> 0.dp
             AppDrawerState.CLOSE -> -screenWidth * 0.3f
         },
-        animationSpec = tween(900)
+        animationSpec = tween(500)
     )
 
     BackHandler(
@@ -104,7 +107,11 @@ fun AppContainer(
             content = content
         )
 
-        if (drawerState == AppDrawerState.OPEN) {
+        AnimatedVisibility(
+            visible = drawerState == AppDrawerState.OPEN,
+            enter = fadeIn(tween(500)),
+            exit = fadeOut(tween(600))
+        ) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
