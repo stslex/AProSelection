@@ -44,7 +44,7 @@ fun MenuIcon(
     contentColorOpen: Color = MaterialTheme.colorScheme.onSurface,
     containerColorClose: Color = containerColorOpen,
     contentColorClose: Color = contentColorOpen,
-    animationDuration: Int = 900
+    animationDuration: Int = 500
 ) {
     val localHaptic = LocalHapticFeedback.current
 
