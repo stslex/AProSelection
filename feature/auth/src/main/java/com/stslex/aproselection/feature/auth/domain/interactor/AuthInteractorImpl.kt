@@ -16,11 +16,13 @@ class AuthInteractorImpl(
         password = password
     )
 
-    override fun register(
+    override suspend fun register(
         username: String,
         password: String
-    ): Flow<UserModel> = repository.register(
-        username = username,
-        password = password
-    )
+    ) {
+        repository.register(
+            username = username,
+            password = password
+        )
+    }
 }

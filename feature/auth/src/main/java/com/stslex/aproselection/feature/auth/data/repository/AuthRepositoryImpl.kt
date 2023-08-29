@@ -1,8 +1,9 @@
 package com.stslex.aproselection.feature.auth.data.repository
 
 import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.UserCredential
 import com.stslex.aproselection.core.network.clients.auth.AuthNetworkClient
-import com.stslex.aproselection.core.network.clients.auth.model.UserAuthSendModel
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
 import com.stslex.aproselection.feature.auth.data.model.AuthMapper.toData
 import com.stslex.aproselection.feature.auth.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
@@ -18,27 +19,25 @@ class AuthRepositoryImpl(
         username: String,
         password: String
     ): Flow<UserModel> = networkClient.auth(
-        UserAuthSendModel(username, password)
+        UserAuthRequestModel(username, password)
     )
         .onEach { response ->
             dataSource.setToken(response.token)
-            dataSource.setUuid(response.uuid)
+            dataSource.setCredential(
+                UserCredential(
+                    username = username,
+                    password = password
+                )
+            )
         }
         .map { user ->
             user.toData()
         }
 
-    override fun register(
+    override suspend fun register(
         username: String,
         password: String
-    ): Flow<UserModel> = networkClient.register(
-        UserAuthSendModel(username, password)
-    )
-        .onEach { response ->
-            dataSource.setToken(response.token)
-            dataSource.setUuid(response.uuid)
-        }
-        .map { user ->
-            user.toData()
-        }
+    ) {
+        networkClient.register(UserAuthRequestModel(username, password))
+    }
 }

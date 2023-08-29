@@ -23,31 +23,35 @@ class AppDataStoreImpl(
 
     companion object {
         private const val DATA_STORE_KEY = "app_data_store"
-        private val UUID_KEY = stringPreferencesKey("UUID_KEY")
         private val TOKEN_KEY = stringPreferencesKey("TOKEN_KEY")
+        private val USERNAME_KEY = stringPreferencesKey("USERNAME_KEY")
+        private val PASSWORD_KEY = stringPreferencesKey("PASSWORD_KEY")
         private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(DATA_STORE_KEY)
     }
-
-    private val _uuid = MutableStateFlow("")
-    override val uuid: StateFlow<String>
-        get() = _uuid.asStateFlow()
 
     private val _token = MutableStateFlow("")
     override val token: StateFlow<String>
         get() = _token.asStateFlow()
 
-    override suspend fun setUuid(uuid: String) {
+    private val _credential = MutableStateFlow(UserCredential())
+    override val credential: StateFlow<UserCredential>
+        get() = _credential.asStateFlow()
+
+    override suspend fun setToken(token: String) {
+        _token.emit(token)
         context.dataStore.updateData { prefs ->
             prefs.toMutablePreferences().apply {
-                set(UUID_KEY, uuid)
+                set(TOKEN_KEY, token)
             }
         }
     }
 
-    override suspend fun setToken(token: String) {
+    override suspend fun setCredential(credential: UserCredential) {
+        _credential.emit(credential)
         context.dataStore.updateData { prefs ->
             prefs.toMutablePreferences().apply {
-                set(TOKEN_KEY, token)
+                set(USERNAME_KEY, credential.username)
+                set(PASSWORD_KEY, credential.password)
             }
         }
     }
@@ -58,7 +62,6 @@ class AppDataStoreImpl(
                 Logger.exception(error)
             }
             .onEach { prefs ->
-                _uuid.value = prefs[UUID_KEY].orEmpty()
                 _token.value = prefs[TOKEN_KEY].orEmpty()
             }
             .flowOn(Dispatchers.IO)
@@ -66,7 +69,6 @@ class AppDataStoreImpl(
     }
 
     override suspend fun clear() {
-        setUuid("")
         setToken("")
     }
 }

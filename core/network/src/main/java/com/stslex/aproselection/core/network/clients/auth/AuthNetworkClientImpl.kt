@@ -1,9 +1,11 @@
 package com.stslex.aproselection.core.network.clients.auth
 
+import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.client.NetworkClient
 import com.stslex.aproselection.core.network.clients.auth.model.HelloRequestModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
-import com.stslex.aproselection.core.network.clients.auth.model.UserAuthSendModel
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
+import com.stslex.aproselection.core.network.clients.auth.model.toStorage
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
@@ -16,45 +18,27 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 
 class AuthNetworkClientImpl(
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
+    private val dataStore: AppDataStore
 ) : AuthNetworkClient {
 
-    override suspend fun getHello(
-        username: String
-    ): HelloRequestModel = withContext(Dispatchers.IO) {
-        networkClient
-            .apiClient
-            .get {
-                url.appendPathSegments("hello", username)
-            }
-            .body()
-    }
-
     override fun auth(
-        user: UserAuthSendModel
+        user: UserAuthRequestModel
     ): Flow<UserAuthResponseModel> = flow {
-        val result = networkClient
-            .apiClient
-            .post {
-                url.appendPathSegments("passport/auth")
-                setBody<UserAuthSendModel>(user)
-            }
-            .body<UserAuthResponseModel>()
-        emit(result)
-    }
-        .flowOn(Dispatchers.IO)
+        dataStore.setCredential(user.toStorage())
+        emit(networkClient.auth())
+    }.flowOn(Dispatchers.IO)
 
-    override fun register(
-        user: UserAuthSendModel
-    ): Flow<UserAuthResponseModel> = flow {
-        val result = networkClient
-            .apiClient
-            .post {
-                url.appendPathSegments("passport/register")
-                setBody<UserAuthSendModel>(user)
-            }
-            .body<UserAuthResponseModel>()
-        emit(result)
+    override suspend fun register(
+        user: UserAuthRequestModel
+    ) {
+        withContext(Dispatchers.IO) {
+            networkClient
+                .apiClient
+                .post {
+                    url.appendPathSegments("passport/registration")
+                    setBody<UserAuthRequestModel>(user)
+                }
+        }
     }
-        .flowOn(Dispatchers.IO)
 }

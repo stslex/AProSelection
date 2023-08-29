@@ -2,7 +2,8 @@ package com.stslex.aproselection.core.network.client
 
 import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.BuildConfig
-import com.stslex.aproselection.core.network.clients.auth.model.TokenResponse
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
 import com.stslex.aproselection.core.network.model.ApiError
 import com.stslex.aproselection.core.network.model.ApiErrorRespond
 import com.stslex.aproselection.core.network.model.ApiErrorType
@@ -22,13 +23,16 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequest
-import io.ktor.client.request.get
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
@@ -49,10 +53,6 @@ class NetworkClientImpl(
             bearer {
                 loadTokens {
                     val token = dataStore.token.value
-                    BearerTokens(token, token)
-                }
-                refreshTokens {
-                    val token = regenerateToken()
                     BearerTokens(token, token)
                 }
             }
@@ -80,9 +80,7 @@ class NetworkClientImpl(
                 host = BuildConfig.API_SERVER_HOST
                 encodedPath = BuildConfig.API_VERSION
                 protocol = URLProtocol.HTTP
-                headers.append("API_KEY", BuildConfig.API_KEY)
-                headers.append("DEVICE_ID", "test")
-                headers.append("uuid", dataStore.uuid.value)
+                headers.append(API_KEY_HEADER, BuildConfig.API_KEY)
                 contentType(ContentType.Application.Json)
             }
         }
@@ -102,19 +100,35 @@ class NetworkClientImpl(
             )
 
             when (apiError.type) {
-                is ApiErrorType.Unauthorized.Token -> regenerateToken()
+                is ApiErrorType.Unauthorized.Token -> {
+                    dataStore.setToken(auth().token)
+                }
+
                 else -> throw apiError
             }
         }
 
-    override suspend fun regenerateToken(): String {
-        val token = apiClient
-            .get {
-                url.appendPathSegments("token")
-            }
-            .body<TokenResponse>()
-            .token
-        dataStore.setToken(token)
-        return token
+    override suspend fun auth(): UserAuthResponseModel = withContext(Dispatchers.IO) {
+        val credential = dataStore.credential.value
+        val username = credential.username
+        val password = credential.password
+        if (username.isBlank() || password.isBlank()) {
+            throw ApiError(
+                message = "need auth",
+                type = ApiErrorType.Authentication.InvalidPassword
+            )
+        }
+        val user = UserAuthRequestModel(
+            username = dataStore.credential.value.username,
+            password = dataStore.credential.value.password
+        )
+        apiClient.post {
+            url.appendPathSegments("passport/login")
+            setBody<UserAuthRequestModel>(user)
+        }.body<UserAuthResponseModel>()
+    }
+
+    companion object {
+        private const val API_KEY_HEADER = "x-api-key"
     }
 }
