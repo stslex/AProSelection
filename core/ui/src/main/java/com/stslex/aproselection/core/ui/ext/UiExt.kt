@@ -24,3 +24,8 @@ val Dp.toPx: Float
     @ReadOnlyComposable
     @Composable
     get() = with(LocalDensity.current) { toPx() }
+
+val Dp.roundToPx: Int
+    @ReadOnlyComposable
+    @Composable
+    get() = with(LocalDensity.current) { roundToPx() }

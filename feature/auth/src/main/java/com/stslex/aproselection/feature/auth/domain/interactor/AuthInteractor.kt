@@ -7,5 +7,5 @@ interface AuthInteractor {
 
     fun auth(username: String, password: String): Flow<UserModel>
 
-    fun register(username: String, password: String): Flow<UserModel>
+    suspend fun register(username: String, password: String)
 }

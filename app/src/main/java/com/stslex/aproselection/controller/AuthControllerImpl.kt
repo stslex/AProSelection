@@ -1,7 +1,6 @@
 package com.stslex.aproselection.controller
 
 import com.stslex.aproselection.core.datastore.AppDataStore
-import com.stslex.aproselection.core.network.client.NetworkClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +11,6 @@ import kotlin.coroutines.coroutineContext
 
 class AuthControllerImpl(
     private val dataStore: AppDataStore,
-    private val networkClient: NetworkClient,
 ) : AuthController {
 
     private val _isAuth = MutableStateFlow<Boolean?>(null)
@@ -22,15 +20,7 @@ class AuthControllerImpl(
     override suspend fun init() {
         dataStore.token
             .onEach { token ->
-                if (token.isBlank()) {
-                    networkClient.regenerateToken()
-                }
-            }
-            .launchIn(CoroutineScope(coroutineContext))
-
-        dataStore.uuid
-            .onEach { uuid ->
-                _isAuth.emit(uuid.isNotBlank())
+                _isAuth.emit(token.isNotBlank())
             }
             .launchIn(CoroutineScope(coroutineContext))
     }

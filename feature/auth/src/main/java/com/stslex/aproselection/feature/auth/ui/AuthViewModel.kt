@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class AuthViewModel(
     private val interactor: AuthInteractor,
@@ -89,26 +90,29 @@ class AuthViewModel(
         val state = screenState.value
         setLoadingState(ScreenLoadingState.Loading)
 
-        interactor
-            .register(
-                username = state.username,
-                password = state.password
-            )
-            .catch { throwable ->
-                _screenEvents.emit(ScreenEvent.Error(throwable))
-                setLoadingState(ScreenLoadingState.Content)
-                handleError(throwable)
-            }
-            .onEach {
-                _screenState.update { currentState ->
-                    currentState.copy(
-                        screenLoadingState = ScreenLoadingState.Content,
-                        authFieldsState = AuthFieldsState.AUTH
+        viewModelScope.launch {
+            runCatching {
+                interactor
+                    .register(
+                        username = state.username,
+                        password = state.password
                     )
-                }
-                _screenEvents.emit(ScreenEvent.SuccessRegistered)
             }
-            .launchIn(viewModelScope)
+                .onFailure { throwable ->
+                    _screenEvents.emit(ScreenEvent.Error(throwable))
+                    setLoadingState(ScreenLoadingState.Content)
+                    handleError(throwable)
+                }
+                .onSuccess {
+                    _screenState.update { currentState ->
+                        currentState.copy(
+                            screenLoadingState = ScreenLoadingState.Content,
+                            authFieldsState = AuthFieldsState.AUTH
+                        )
+                    }
+                    _screenEvents.emit(ScreenEvent.SuccessRegistered)
+                }
+        }
     }
 
     private fun auth() {

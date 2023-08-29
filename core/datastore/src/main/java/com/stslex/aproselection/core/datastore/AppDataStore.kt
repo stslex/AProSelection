@@ -4,12 +4,12 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface AppDataStore {
 
-    val uuid: StateFlow<String>
     val token: StateFlow<String>
-
-    suspend fun setUuid(uuid: String)
+    val credential: StateFlow<UserCredential>
 
     suspend fun setToken(token: String)
+
+    suspend fun setCredential(credential: UserCredential)
 
     suspend fun clear()
 
