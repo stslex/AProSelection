@@ -34,12 +34,11 @@ import com.stslex.aproselection.feature.home.ui.model.UserUi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlin.reflect.KProperty0
 
 @Composable
 fun HomeScreen(
     logOut: () -> Unit,
-    users: KProperty0<StateFlow<PagingData<UserUi>>>,
+    users: () -> StateFlow<PagingData<UserUi>>,
     modifier: Modifier = Modifier
 ) {
     var isUsersOpen by remember {
