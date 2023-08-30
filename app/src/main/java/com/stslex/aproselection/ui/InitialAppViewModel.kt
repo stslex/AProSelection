@@ -1,10 +1,10 @@
 package com.stslex.aproselection.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stslex.aproselection.controller.AuthController
 import com.stslex.aproselection.core.navigation.destination.NavigationScreen
 import com.stslex.aproselection.core.navigation.navigator.Navigator
-import com.stslex.aproselection.core.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 class InitialAppViewModel(
     private val navigator: Navigator,
     private val controller: AuthController
-) : BaseViewModel() {
+) : ViewModel() {
 
     private val _isInitialAuth = MutableStateFlow<Boolean?>(null)
     val isInitialAuth: StateFlow<Boolean?>

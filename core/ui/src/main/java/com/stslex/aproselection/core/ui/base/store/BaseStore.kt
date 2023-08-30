@@ -1,5 +1,6 @@
 package com.stslex.aproselection.core.ui.base.store
 
+import com.stslex.aproselection.core.core.Logger
 import com.stslex.aproselection.core.ui.base.store.Store.Action
 import com.stslex.aproselection.core.ui.base.store.Store.Event
 import com.stslex.aproselection.core.ui.base.store.Store.State
@@ -33,5 +34,9 @@ abstract class BaseStoreImpl<S : State, E : Event, A : Action> :
 
     override fun init(scope: CoroutineScope) {
         _scope = scope
+    }
+
+    fun logError(error: Throwable) {
+        Logger.exception(error)
     }
 }

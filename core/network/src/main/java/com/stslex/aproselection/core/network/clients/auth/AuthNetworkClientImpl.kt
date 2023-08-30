@@ -2,15 +2,12 @@ package com.stslex.aproselection.core.network.clients.auth
 
 import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.client.NetworkClient
-import com.stslex.aproselection.core.network.clients.auth.model.HelloRequestModel
-import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
 import com.stslex.aproselection.core.network.clients.auth.model.toStorage
-import io.ktor.client.call.body
-import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.http.appendPathSegments
+import io.ktor.http.path
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -36,7 +33,7 @@ class AuthNetworkClientImpl(
             networkClient
                 .apiClient
                 .post {
-                    url.appendPathSegments("passport/registration")
+                    url.path("passport/registration")
                     setBody<UserAuthRequestModel>(user)
                 }
         }

@@ -27,7 +27,7 @@ androidxJunit = "1.1.5"
 espresso = "3.5.1"
 
 room = "2.5.2"
-ksp = "1.8.22-1.0.11"
+ksp = "1.9.0-1.0.13"
 mockito = "2.19.0"
 datastore = "1.0.0"
 
@@ -94,6 +94,7 @@ junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
 androidx-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.7.3" }
 
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-paging = { group = "androidx.room", name = "room-paging", version.ref = "room" }
@@ -163,7 +164,8 @@ test = [
     "mockito",
     "junit",
     "koin-test-core",
-    "koin-test-junit"
+    "koin-test-junit",
+    "coroutine-test"
 ]
 
 room = [

@@ -7,5 +7,5 @@ import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.Event
 import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.State
 
 class HomeViewModel(
-    private val store: HomeScreenStore,
+    store: HomeScreenStore,
 ) : BaseViewModel<State, Event, Action>(store)

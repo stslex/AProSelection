@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
-import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
 
 @Composable
 fun AuthBottomText(
-    authFieldsState: AuthFieldsState,
+    authFieldsState: AuthStore.AuthFieldsState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

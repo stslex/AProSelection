@@ -2,8 +2,8 @@ package com.stslex.aproselection.core.network.client
 
 import com.stslex.aproselection.core.datastore.AppDataStore
 import com.stslex.aproselection.core.network.BuildConfig
-import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
+import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
 import com.stslex.aproselection.core.network.model.ApiError
 import com.stslex.aproselection.core.network.model.ApiErrorRespond
 import com.stslex.aproselection.core.network.model.ApiErrorType
@@ -27,9 +27,9 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
-import io.ktor.http.appendPathSegments
 import io.ktor.http.contentType
 import io.ktor.http.encodedPath
+import io.ktor.http.path
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -76,7 +76,7 @@ class NetworkClientImpl(
 
     override val apiClient: HttpClient = client.config {
         defaultRequest {
-            url {
+            url("${BuildConfig.API_SERVER_HOST}") {
                 host = BuildConfig.API_SERVER_HOST
                 encodedPath = BuildConfig.API_VERSION
                 protocol = URLProtocol.HTTP
@@ -100,9 +100,7 @@ class NetworkClientImpl(
             )
 
             when (apiError.type) {
-                is ApiErrorType.Unauthorized.Token -> {
-                    dataStore.setToken(auth().token)
-                }
+                is ApiErrorType.Unauthorized.Token -> auth()
 
                 else -> throw apiError
             }
@@ -122,10 +120,15 @@ class NetworkClientImpl(
             username = dataStore.credential.value.username,
             password = dataStore.credential.value.password
         )
-        apiClient.post {
-            url.appendPathSegments("passport/login")
-            setBody<UserAuthRequestModel>(user)
-        }.body<UserAuthResponseModel>()
+        apiClient
+            .post {
+                url.path("passport/login")
+                setBody<UserAuthRequestModel>(user)
+            }
+            .body<UserAuthResponseModel>()
+            .also { authModel ->
+                dataStore.setToken(token = authModel.token)
+            }
     }
 
     companion object {

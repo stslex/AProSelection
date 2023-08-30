@@ -32,7 +32,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.stslex.aproselection.core.navigation.destination.AppDestination
-import com.stslex.aproselection.core.navigation.ext.NavExt.isAuth
 import com.stslex.aproselection.core.ui.ext.noRippleClick
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.navigation.NavigationHost
@@ -48,17 +47,22 @@ fun InitialApp(
     val isInitialAuth by remember {
         viewModel.isInitialAuth
     }.collectAsState()
+    var isAuth by remember {
+        mutableStateOf(false)
+    }
 
     LaunchedEffect(Unit) {
         viewModel.init()
     }
 
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        isAuth = destination.route != AppDestination.AUTH.navigationRoute
+    }
+
     AppDestination
         .getStartDestination(isInitialAuth)
         ?.let { destination ->
-            AppContainer(
-                isAuth = navController.isAuth
-            ) {
+            AppContainer(isAuth = isAuth) {
                 NavigationHost(
                     navController = navController,
                     startDestination = destination
@@ -85,7 +89,8 @@ fun AppContainer(
             AppDrawerState.OPEN -> 0.dp
             AppDrawerState.CLOSE -> -screenWidth * 0.3f
         },
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "drawer animation"
     )
 
     BackHandler(

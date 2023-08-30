@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.stslex.aproselection.feature.auth.R
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordSubmitInput
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.hidden.HiddenState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Action.InputAction.PasswordSubmitInput
 
 @Stable
 data class PasswordSubmitTextFieldState(
@@ -30,10 +31,10 @@ data class PasswordSubmitTextFieldState(
 
 @Composable
 fun rememberPasswordSubmitTextFieldState(
-    hapticFeedback: HapticFeedback,
     processAction: (PasswordSubmitInput) -> Unit,
     text: String,
 ): PasswordSubmitTextFieldState {
+    val hapticFeedback = LocalHapticFeedback.current
     val hiddenState = remember {
         HiddenState()
     }

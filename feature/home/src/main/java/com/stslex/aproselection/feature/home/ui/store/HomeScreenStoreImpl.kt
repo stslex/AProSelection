@@ -11,6 +11,7 @@ import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.Action
 import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.Event
 import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.State
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -21,10 +22,11 @@ class HomeScreenStoreImpl(
     private val interactor: HomeInteractor,
 ) : HomeScreenStore, BaseStoreImpl<State, Event, Action>() {
 
-
     override val initialState: State = State(
         users = { users }
     )
+
+    override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     private val users = BasePager
         .makePager(interactor::getAllUsers)

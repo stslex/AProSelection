@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -28,14 +29,11 @@ import com.stslex.aproselection.feature.auth.R
 import com.stslex.aproselection.feature.auth.ui.components.AuthBottomText
 import com.stslex.aproselection.feature.auth.ui.components.AuthFieldsColumn
 import com.stslex.aproselection.feature.auth.ui.components.AuthTitle
-import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
 import com.stslex.aproselection.feature.auth.ui.model.SnackbarActionType
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.AuthScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.rememberAuthScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.UsernameTextFieldState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
@@ -61,7 +59,7 @@ fun AuthScreen(
             }
         }
     }
-    if (state.screenLoadingState == ScreenLoadingState.Loading) {
+    if (state.screenLoadingState == AuthStore.ScreenLoadingState.Loading) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -140,8 +138,14 @@ fun AuthScreenPreview() {
     AppTheme {
         AuthScreen(
             state = rememberAuthScreenState(
-                screenStateFlow = { MutableStateFlow(ScreenState()) },
-                screenEventFlow = { MutableSharedFlow() },
+                screenState = AuthStore.State(
+                    screenLoadingState = AuthStore.ScreenLoadingState.Content,
+                    username = "",
+                    password = "",
+                    passwordSubmit = "",
+                    authFieldsState = AuthStore.AuthFieldsState.AUTH
+                ),
+                snackbarHostState = SnackbarHostState(),
                 processAction = {}
             )
         )

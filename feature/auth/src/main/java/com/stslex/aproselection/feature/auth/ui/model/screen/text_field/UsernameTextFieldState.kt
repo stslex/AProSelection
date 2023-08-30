@@ -4,18 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import com.stslex.aproselection.feature.auth.R
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.UsernameInput
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.AuthTextField
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Action.InputAction
 
 @Stable
 data class UsernameTextFieldState(
-    private val processAction: (UsernameInput) -> Unit,
+    private val processAction: (InputAction.UsernameInput) -> Unit,
     override val text: String,
 ) : AuthTextField() {
 
     override val sendAction: (text: String) -> Unit
         get() = { value ->
-            processAction(UsernameInput(value))
+            processAction(InputAction.UsernameInput(value))
         }
 
     override val label: Int = R.string.auth_username_text
@@ -24,7 +24,7 @@ data class UsernameTextFieldState(
 @Composable
 fun rememberUsernameTextFieldState(
     text: String,
-    processAction: (UsernameInput) -> Unit
+    processAction: (InputAction.UsernameInput) -> Unit
 ): UsernameTextFieldState = remember(text) {
     UsernameTextFieldState(
         text = text,

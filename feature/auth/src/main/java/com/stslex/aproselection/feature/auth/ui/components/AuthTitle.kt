@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppDimens
 import com.stslex.aproselection.core.ui.theme.AppTheme
-import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
 
 @Composable
 fun AuthTitle(
-    state: AuthFieldsState,
+    state: AuthStore.AuthFieldsState,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -46,7 +46,7 @@ fun AuthScreenPreview() {
         ) {
             AuthTitle(
                 modifier = Modifier.align(Alignment.TopCenter),
-                state = AuthFieldsState.AUTH
+                state = AuthStore.AuthFieldsState.AUTH
             )
         }
     }
