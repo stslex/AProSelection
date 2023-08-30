@@ -1,42 +1,42 @@
 package com.stslex.aproselection.feature.auth.ui.model.screen
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.SwipeableState
+import androidx.compose.material.rememberSwipeableState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
-import com.stslex.aproselection.core.network.model.ApiError
-import com.stslex.aproselection.core.ui.ext.CollectAsEvent
-import com.stslex.aproselection.feature.auth.ui.model.AuthFieldsState
-import com.stslex.aproselection.feature.auth.ui.model.ScreenLoadingState
-import com.stslex.aproselection.feature.auth.ui.model.SnackbarActionType
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenEvent
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.PasswordInputTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.PasswordSubmitTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.UsernameTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.rememberPasswordInputTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.rememberPasswordSubmitTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.rememberUsernameTextFieldState
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Action
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.AuthFieldsState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.ScreenLoadingState
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Stable
-data class AuthScreenState(
+data class AuthScreenState @OptIn(ExperimentalMaterialApi::class) constructor(
     val screenLoadingState: ScreenLoadingState = ScreenLoadingState.Content,
     val usernameState: UsernameTextFieldState,
     val passwordEnterState: PasswordInputTextFieldState,
     val passwordSubmitState: PasswordSubmitTextFieldState,
     val authFieldsState: AuthFieldsState = AuthFieldsState.AUTH,
     val snackbarHostState: SnackbarHostState,
-    private val processAction: (ScreenAction) -> Unit,
+    val swipeableState: SwipeableState<AuthFieldsState>,
+    private val processAction: (Action) -> Unit,
     private val keyboardController: SoftwareKeyboardController? = null
 ) {
 
@@ -53,52 +53,19 @@ data class AuthScreenState(
 
     fun onSubmitClicked() {
         keyboardController?.hide()
-        processAction(ScreenAction.OnSubmitClicked)
-    }
-
-    fun onAuthFieldChange() {
-        processAction(ScreenAction.OnAuthFieldChange)
+        processAction(Action.OnSubmitClicked)
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun rememberAuthScreenState(
-    screenStateFlow: () -> StateFlow<ScreenState>,
-    screenEventFlow: () -> SharedFlow<ScreenEvent>,
-    processAction: (ScreenAction) -> Unit,
+    screenState: AuthStore.State,
+    snackbarHostState: SnackbarHostState,
+    processAction: (Action) -> Unit,
 ): AuthScreenState {
     val keyboardController = LocalSoftwareKeyboardController.current
-    val hapticFeedback = LocalHapticFeedback.current
-
-    val screenState by remember {
-        screenStateFlow()
-    }.collectAsState()
-
-    val snackbarHostState = remember {
-        SnackbarHostState()
-    }
-
-    screenEventFlow().CollectAsEvent { event ->
-        when (event) {
-            is ScreenEvent.Error -> when (val error = event.error) {
-                is ApiError -> snackbarHostState.showSnackbar(
-                    message = error.message,
-                    actionLabel = SnackbarActionType.ERROR.action
-                )
-
-                else -> snackbarHostState.showSnackbar(
-                    message = "smth went wrong",
-                    actionLabel = SnackbarActionType.ERROR.action
-                )
-            }
-
-            is ScreenEvent.SuccessRegistered -> snackbarHostState.showSnackbar(
-                message = "Success",
-                actionLabel = SnackbarActionType.SUCCESS.action
-            )
-        }
-    }
+    val haptic = LocalHapticFeedback.current
 
     val usernameTextFieldState = rememberUsernameTextFieldState(
         text = screenState.username,
@@ -106,16 +73,28 @@ fun rememberAuthScreenState(
     )
 
     val passwordEnterState = rememberPasswordInputTextFieldState(
-        hapticFeedback = hapticFeedback,
         processAction = processAction,
         text = screenState.password
     )
 
     val passwordSubmitState = rememberPasswordSubmitTextFieldState(
-        hapticFeedback = hapticFeedback,
         processAction = processAction,
         text = screenState.passwordSubmit
     )
+
+    val swipeableState = rememberSwipeableState(
+        initialValue = AuthFieldsState.AUTH,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessHigh,
+            visibilityThreshold = Spring.DefaultDisplacementThreshold
+        )
+    )
+
+    LaunchedEffect(key1 = swipeableState.currentValue) {
+        processAction(Action.OnAuthFieldChange(swipeableState.currentValue))
+        haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+    }
 
     return remember(screenState) {
         AuthScreenState(
@@ -125,6 +104,7 @@ fun rememberAuthScreenState(
             authFieldsState = screenState.authFieldsState,
             snackbarHostState = snackbarHostState,
             processAction = processAction,
+            swipeableState = swipeableState,
             keyboardController = keyboardController,
             usernameState = usernameTextFieldState
         )

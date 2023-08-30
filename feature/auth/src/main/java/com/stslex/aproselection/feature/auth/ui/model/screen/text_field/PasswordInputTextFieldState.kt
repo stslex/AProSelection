@@ -4,15 +4,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.platform.LocalHapticFeedback
 import com.stslex.aproselection.feature.auth.R
-import com.stslex.aproselection.feature.auth.ui.model.mvi.ScreenAction.InputAction.PasswordInput
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.hidden.HiddenState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Action.InputAction
 
 @Stable
 data class PasswordInputTextFieldState(
     private val hapticFeedback: HapticFeedback,
-    private val processAction: (PasswordInput) -> Unit,
+    private val processAction: (InputAction.PasswordInput) -> Unit,
     private val hiddenState: HiddenState,
     override val text: String,
 ) : PasswordTextFieldState(
@@ -24,16 +25,16 @@ data class PasswordInputTextFieldState(
 
     override val sendAction: (text: String) -> Unit
         get() = { value ->
-            processAction(PasswordInput(value))
+            processAction(InputAction.PasswordInput(value))
         }
 }
 
 @Composable
 fun rememberPasswordInputTextFieldState(
-    hapticFeedback: HapticFeedback,
-    processAction: (PasswordInput) -> Unit,
+    processAction: (InputAction.PasswordInput) -> Unit,
     text: String,
 ): PasswordInputTextFieldState {
+    val hapticFeedback = LocalHapticFeedback.current
     val hiddenState = remember { HiddenState() }
     return remember(text) {
         PasswordInputTextFieldState(

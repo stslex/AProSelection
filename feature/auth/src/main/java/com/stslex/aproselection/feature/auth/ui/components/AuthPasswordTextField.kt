@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppTheme
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.rememberPasswordSubmitTextFieldState
 
 @Composable
 fun AuthPasswordTextField(
@@ -85,15 +86,13 @@ fun AuthPasswordTextFieldPreview() {
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-//            AuthPasswordTextField(
-//                modifier = Modifier.align(Alignment.Center),
-//                inputPassword = text,
-//                onTextChange = { value ->
-//                    text = value
-//                },
-//                hint = "enterPassword",
-//                supportingEndText = "4/10"
-//            )
+            AuthPasswordTextField(
+                state = rememberPasswordSubmitTextFieldState(
+                    text = "",
+                    processAction = {}
+                ),
+                modifier = Modifier.align(Alignment.Center),
+            )
         }
     }
 }
