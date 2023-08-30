@@ -9,7 +9,7 @@ import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Event
 import com.stslex.aproselection.feature.auth.ui.store.AuthStore.State
 
 class AuthViewModel(
-    private val store: AuthStore,
+    store: AuthStore,
     private val navigator: Navigator
 ) : BaseViewModel<State, Event, Action>(store) {
 

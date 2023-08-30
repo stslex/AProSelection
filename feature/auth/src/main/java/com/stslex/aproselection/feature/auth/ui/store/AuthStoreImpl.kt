@@ -36,7 +36,7 @@ class AuthStoreImpl(
             is Action.OnSubmitClicked -> processSubmitClicked()
             is Action.InputAction.PasswordInput -> processPasswordInput(action)
             is Action.InputAction.PasswordSubmitInput -> processPasswordSubmitInput(action)
-            is Action.OnAuthFieldChange -> processAuthFieldChange()
+            is Action.OnAuthFieldChange -> processAuthFieldChange(action)
         }
     }
 
@@ -64,10 +64,10 @@ class AuthStoreImpl(
         }
     }
 
-    private fun processAuthFieldChange() {
+    private fun processAuthFieldChange(action: Action.OnAuthFieldChange) {
         updateState { currentValue ->
             currentValue.copy(
-                authFieldsState = currentValue.authFieldsState.inverse
+                authFieldsState = action.targetState
             )
         }
     }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.stslex.aproselection.core.navigation.destination.AppDestination
 import com.stslex.aproselection.core.ui.ext.CollectAsEvent
 import com.stslex.aproselection.feature.auth.ui.AuthScreen
 import com.stslex.aproselection.feature.auth.ui.AuthViewModel
@@ -20,7 +21,7 @@ fun NavGraphBuilder.authRouter(
     modifier: Modifier = Modifier,
 ) {
     composable(
-        route = com.stslex.aproselection.core.navigation.destination.AppDestination.AUTH.navigationRoute
+        route = AppDestination.AUTH.navigationRoute
     ) {
         val viewModel: AuthViewModel = koinViewModel()
 
@@ -29,8 +30,7 @@ fun NavGraphBuilder.authRouter(
 
         viewModel.event.CollectAsEvent { event ->
             when (event) {
-                is AuthStore.Event.Navigation.AuthFeature -> TODO()
-
+                is AuthStore.Event.Navigation -> viewModel.processNavigation(event)
                 is AuthStore.Event.ShowSnackbar -> {
                     val actionType = when (event) {
                         is AuthStore.Event.ShowSnackbar.SuccessRegister -> SnackbarActionType.SUCCESS

@@ -28,21 +28,22 @@ class HomeScreenStoreImpl(
 
     override val state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
-    private val users = BasePager
-        .makePager(interactor::getAllUsers)
-        .flow
-        .map { pagingData ->
-            pagingData.map { user ->
-                user.toPresentation()
+    private val users
+        get() = BasePager
+            .makePager(interactor::getAllUsers)
+            .flow
+            .map { pagingData ->
+                pagingData.map { user ->
+                    user.toPresentation()
+                }
             }
-        }
-        .flowOn(Dispatchers.IO)
-        .cachedIn(scope)
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.Lazily,
-            initialValue = PagingData.empty()
-        )
+            .flowOn(Dispatchers.IO)
+            .cachedIn(scope)
+            .stateIn(
+                scope = scope,
+                started = SharingStarted.Lazily,
+                initialValue = PagingData.empty()
+            )
 
     override fun processAction(action: Action) {
         when (action) {

@@ -40,7 +40,9 @@ interface AuthStore : Store<State, Event, Action> {
 
         data object OnSubmitClicked : Action
 
-        data object OnAuthFieldChange : Action
+        data class OnAuthFieldChange(
+            val targetState: AuthFieldsState
+        ) : Action
 
         sealed class InputAction(
             open val value: String
@@ -72,12 +74,6 @@ interface AuthStore : Store<State, Event, Action> {
             buttonResId = R.string.auth_button_choose_register,
             titleResId = R.string.auth_title_register
         );
-
-        val inverse: AuthFieldsState
-            get() = when (this) {
-                AUTH -> REGISTER
-                REGISTER -> AUTH
-            }
     }
 
     sealed interface ScreenLoadingState {
