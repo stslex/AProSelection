@@ -1,6 +1,5 @@
 package com.stslex.aproselection.core.user.data.repository
 
-import com.stslex.aproselection.core.network.clients.user.model.UpdateUserInfoBody
 import com.stslex.aproselection.core.user.data.model.UserData
 import com.stslex.aproselection.core.user.data.model.UserUpdateData
 

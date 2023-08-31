@@ -15,7 +15,7 @@ class AuthViewModel(
 
     fun processNavigation(event: Event.Navigation) {
         when (event) {
-            Event.Navigation.AuthFeature -> navigator.navigate(NavigationScreen.Auth)
+            Event.Navigation.HomeFeature -> navigator.navigate(NavigationScreen.Home)
         }
     }
 }
