@@ -122,7 +122,7 @@ class AuthStoreImpl(
             }
             .onEach {
                 setLoadingState(ScreenLoadingState.Content)
-                sendEvent(Event.Navigation.AuthFeature)
+                sendEvent(Event.Navigation.HomeFeature)
             }
             .flowOn(Dispatchers.IO)
             .launchIn(scope)

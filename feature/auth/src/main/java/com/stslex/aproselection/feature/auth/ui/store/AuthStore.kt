@@ -32,7 +32,7 @@ interface AuthStore : Store<State, Event, Action> {
 
         sealed interface Navigation : Event {
 
-            data object AuthFeature : Navigation
+            data object HomeFeature : Navigation
         }
     }
 
