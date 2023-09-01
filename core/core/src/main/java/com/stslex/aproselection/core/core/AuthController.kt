@@ -1,4 +1,4 @@
-package com.stslex.aproselection.controller
+package com.stslex.aproselection.core.core
 
 import kotlinx.coroutines.flow.StateFlow
 

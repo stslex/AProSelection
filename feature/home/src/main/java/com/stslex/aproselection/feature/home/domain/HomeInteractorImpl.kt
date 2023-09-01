@@ -1,6 +1,6 @@
 package com.stslex.aproselection.feature.home.domain
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import com.stslex.aproselection.core.user.data.repository.UserRepository
 import com.stslex.aproselection.feature.home.domain.model.UserDomain
 import com.stslex.aproselection.feature.home.domain.model.toDomain

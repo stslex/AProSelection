@@ -1,8 +1,8 @@
 import com.android.build.api.dsl.ApplicationExtension
+import com.stslex.aproselection.configureKotlinAndroid
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import com.stslex.aproselection.configureKotlinAndroid
 
 class AndroidApplicationConventionPlugin : Plugin<Project> {
 
@@ -11,6 +11,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
+                apply("com.google.devtools.ksp")
             }
 
             extensions.configure<ApplicationExtension> {

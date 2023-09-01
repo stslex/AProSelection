@@ -10,7 +10,7 @@ val moduleCoreNavigation: (navHostController: NavHostController) -> Module = { n
     module {
         single<Navigator> {
             NavigatorImpl(
-                navHostController
+//                navHostController
             )
         }
     }

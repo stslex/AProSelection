@@ -1,4 +1,4 @@
-package com.stslex.aproselection.core.datastore
+package com.stslex.aproselection.core.datastore.store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.stslex.aproselection.core.core.Logger
+import com.stslex.aproselection.core.datastore.UserCredential
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +16,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
-class AppDataStoreImpl(
+class AppDataStoreImpl @Inject constructor(
     private val context: Context
 ) : AppDataStore {
 

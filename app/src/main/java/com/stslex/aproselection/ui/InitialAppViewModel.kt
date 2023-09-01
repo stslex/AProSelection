@@ -2,18 +2,20 @@ package com.stslex.aproselection.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.stslex.aproselection.controller.AuthController
+import com.stslex.aproselection.core.core.AuthController
 import com.stslex.aproselection.core.navigation.destination.NavigationScreen
 import com.stslex.aproselection.core.navigation.navigator.Navigator
+import dagger.Lazy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class InitialAppViewModel(
-    private val navigator: Navigator,
-    private val controller: AuthController
+class InitialAppViewModel @Inject constructor(
+    private val controller: AuthController,
+    private val navigator: Lazy<Navigator>,
 ) : ViewModel() {
 
     private val _isInitialAuth = MutableStateFlow<Boolean?>(null)
@@ -27,7 +29,7 @@ class InitialAppViewModel(
                     _isInitialAuth.emit(isAuth)
                 }
                 if (isAuth == false) {
-                    navigator.navigate(NavigationScreen.Auth)
+                    navigator.get().navigate(NavigationScreen.Auth)
                 }
             }
             .launchIn(viewModelScope)

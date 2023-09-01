@@ -1,6 +1,6 @@
 package com.stslex.aproselection.feature.auth.data.repository
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import com.stslex.aproselection.core.datastore.UserCredential
 import com.stslex.aproselection.core.network.clients.auth.AuthNetworkClient
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel

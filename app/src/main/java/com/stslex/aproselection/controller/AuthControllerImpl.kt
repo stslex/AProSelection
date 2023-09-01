@@ -1,15 +1,17 @@
 package com.stslex.aproselection.controller
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.core.AuthController
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 import kotlin.coroutines.coroutineContext
 
-class AuthControllerImpl(
+class AuthControllerImpl @Inject constructor(
     private val dataStore: AppDataStore,
 ) : AuthController {
 

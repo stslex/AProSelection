@@ -1,6 +1,6 @@
 package com.stslex.aproselection.core.network.clients.auth
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import com.stslex.aproselection.core.network.client.NetworkClient
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
