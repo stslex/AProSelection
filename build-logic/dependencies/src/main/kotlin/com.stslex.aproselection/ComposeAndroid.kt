@@ -29,6 +29,9 @@ internal fun Project.configureAndroidCompose(
             add("implementation", platform(composeBom))
             add("androidTestImplementation", platform(composeBom))
 
+            val lifecycle = libs.findBundle("lifecycle").get()
+            add("implementation", lifecycle)
+
             val composeApi = libs.findBundle("compose").get()
             add("implementation", composeApi)
 

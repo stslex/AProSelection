@@ -1,6 +1,5 @@
 package com.stslex.aproselection.core.navigation.navigator
 
-import androidx.navigation.NavHostController
 import com.stslex.aproselection.core.navigation.destination.NavigationScreen
 import javax.inject.Inject
 

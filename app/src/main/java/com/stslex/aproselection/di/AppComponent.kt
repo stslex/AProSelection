@@ -2,8 +2,8 @@ package com.stslex.aproselection.di
 
 import com.stslex.aproselection.SelectApplication
 import com.stslex.aproselection.core.core.AppApi
-import com.stslex.aproselection.core.datastore.di.AppDataStoreApi
 import com.stslex.aproselection.core.core.AppCoreApi
+import com.stslex.aproselection.core.datastore.di.AppDataStoreApi
 import dagger.Component
 import javax.inject.Singleton
 

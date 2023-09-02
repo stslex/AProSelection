@@ -15,8 +15,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthStoreImpl(
+class AuthStoreImpl @Inject constructor(
     private val interactor: AuthInteractor
 ) : AuthStore, BaseStoreImpl<State, Event, Action>() {
 

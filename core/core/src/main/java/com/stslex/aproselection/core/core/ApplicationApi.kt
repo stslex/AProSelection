@@ -8,4 +8,4 @@ interface ApplicationApi {
 }
 
 val Context.appApi: AppApi
-    get() = (this as ApplicationApi).appApi
+    get() = (this.applicationContext as ApplicationApi).appApi
