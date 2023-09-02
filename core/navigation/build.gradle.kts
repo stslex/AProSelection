@@ -7,4 +7,5 @@ android.namespace = "com.stslex.aproselection.core.navigation"
 
 dependencies {
     implementation(project(":core:core"))
+    implementation(project(":core:ui"))
 }

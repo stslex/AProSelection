@@ -1,8 +1,8 @@
 package com.stslex.aproselection.feature.main.di
 
+import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.core.AppApi
-import com.stslex.aproselection.core.navigation.di.NavigationApi
-import com.stslex.aproselection.feature.main.MainActivity
+import com.stslex.aproselection.core.ui.di.NavigationApi
 import dagger.Component
 
 @Component(
@@ -28,6 +28,6 @@ interface MainComponent {
         }
     }
 
-    fun inject(activity: MainActivity)
+    val factory: ViewModelProvider.Factory
 }
 

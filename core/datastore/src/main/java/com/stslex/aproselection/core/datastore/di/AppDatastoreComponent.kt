@@ -4,11 +4,11 @@ import com.stslex.aproselection.core.core.AppCoreApi
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton
 @Component(
     modules = [AppDataStoreModule::class],
     dependencies = [AppDatastoreDependencies::class]
 )
+@Singleton
 interface AppDatastoreComponent : AppDataStoreApi {
 
     @Component.Factory

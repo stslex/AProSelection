@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AuthNetworkClientImpl @Inject constructor(
     private val networkClient: NetworkClient,
     private val dataStore: AppDataStore

@@ -6,16 +6,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.stslex.aproselection.core.core.appApi
 import com.stslex.aproselection.core.navigation.destination.AppDestination
-import com.stslex.aproselection.core.ui.base.daggerViewModel
 import com.stslex.aproselection.core.ui.ext.CollectAsEvent
-import com.stslex.aproselection.feature.auth.di.AuthComponentBuilder
+import com.stslex.aproselection.feature.auth.di.setupComponent
 import com.stslex.aproselection.feature.auth.ui.AuthScreen
-import com.stslex.aproselection.feature.auth.ui.AuthViewModel
 import com.stslex.aproselection.feature.auth.ui.model.SnackbarActionType
 import com.stslex.aproselection.feature.auth.ui.model.screen.rememberAuthScreenState
 import com.stslex.aproselection.feature.auth.ui.store.AuthStore
@@ -26,11 +22,7 @@ fun NavGraphBuilder.authRouter(
     composable(
         route = AppDestination.AUTH.navigationRoute
     ) {
-        val context = LocalContext.current
-        val component = AuthComponentBuilder.create(context.appApi)
-        val viewModel: AuthViewModel = daggerViewModel<AuthViewModel> {
-            component.getViewModelFactory()
-        }
+        val viewModel = setupComponent()
 
         val snackbarHostState = remember { SnackbarHostState() }
         val state by remember { viewModel.state }.collectAsState()

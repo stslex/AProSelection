@@ -1,4 +1,4 @@
-package com.stslex.aproselection.feature.main
+package com.stslex.aproselection.core.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

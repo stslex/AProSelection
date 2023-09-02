@@ -2,7 +2,7 @@ package com.stslex.aproselection.feature.home.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.datastore.di.AppDataStoreApi
-import com.stslex.aproselection.core.navigation.di.NavigationApi
+import com.stslex.aproselection.core.ui.di.NavigationApi
 import com.stslex.aproselection.core.user.di.UserCoreApi
 import dagger.Component
 

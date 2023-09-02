@@ -2,8 +2,8 @@ package com.stslex.aproselection.feature.auth.di
 
 import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.datastore.di.AppDataStoreApi
-import com.stslex.aproselection.core.navigation.di.NavigationApi
 import com.stslex.aproselection.core.network.di.NetworkApi
+import com.stslex.aproselection.core.ui.di.NavigationApi
 import dagger.Component
 
 @Component(
@@ -37,5 +37,5 @@ interface AuthComponent {
         }
     }
 
-    fun getViewModelFactory(): ViewModelProvider.Factory
+    val viewModelFactory: ViewModelProvider.Factory
 }

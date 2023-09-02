@@ -36,7 +36,9 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class NetworkClientImpl @Inject constructor(
     private val dataStore: AppDataStore
 ) : NetworkClient {

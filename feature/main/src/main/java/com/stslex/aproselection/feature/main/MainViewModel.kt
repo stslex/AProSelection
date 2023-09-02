@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.stslex.aproselection.core.core.AuthController
 import com.stslex.aproselection.core.navigation.destination.NavigationScreen
-import com.stslex.aproselection.core.navigation.navigator.Navigator
+import com.stslex.aproselection.core.ui.di.Navigator
 import dagger.Lazy
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
     val isInitialAuth: StateFlow<Boolean?>
         get() = _isInitialAuth.asStateFlow()
 
-    fun init() {
+    init {
         controller.isAuth
             .onEach { isAuth ->
                 if (isInitialAuth.value == null) {

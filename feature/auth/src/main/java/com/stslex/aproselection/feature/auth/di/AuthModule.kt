@@ -3,6 +3,7 @@ package com.stslex.aproselection.feature.auth.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.core.ViewModelKey
+import com.stslex.aproselection.core.ui.base.ViewModelFactory
 import com.stslex.aproselection.feature.auth.data.repository.AuthRepository
 import com.stslex.aproselection.feature.auth.data.repository.AuthRepositoryImpl
 import com.stslex.aproselection.feature.auth.domain.interactor.AuthInteractor
@@ -35,5 +36,5 @@ interface AuthModule {
     fun bindStore(impl: AuthStoreImpl): AuthStore
 
     @Binds
-    fun bindsViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+    fun bindsViewModelFactory(impl: ViewModelFactory): ViewModelProvider.Factory
 }

@@ -8,16 +8,20 @@ import com.stslex.aproselection.core.network.clients.user.UserNetworkClient
 import com.stslex.aproselection.core.network.clients.user.UserNetworkClientImpl
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 interface NetworkModule {
 
     @Binds
+    @Singleton
     fun bindNetworkClient(impl: NetworkClientImpl): NetworkClient
 
     @Binds
+    @Singleton
     fun bindsAuthNetworkClient(impl: AuthNetworkClientImpl): AuthNetworkClient
 
     @Binds
+    @Singleton
     fun bindsUserNetworkClient(impl: UserNetworkClientImpl): UserNetworkClient
 }

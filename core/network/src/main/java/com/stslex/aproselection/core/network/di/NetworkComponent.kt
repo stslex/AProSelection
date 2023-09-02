@@ -2,11 +2,13 @@ package com.stslex.aproselection.core.network.di
 
 import com.stslex.aproselection.core.datastore.di.AppDataStoreApi
 import dagger.Component
+import javax.inject.Singleton
 
 @Component(
     modules = [NetworkModule::class],
     dependencies = [NetworkDependencies::class]
 )
+@Singleton
 interface NetworkComponent : NetworkApi {
 
     @Component.Factory

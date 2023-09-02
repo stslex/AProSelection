@@ -3,6 +3,7 @@ package com.stslex.aproselection.feature.home.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.core.ViewModelKey
+import com.stslex.aproselection.core.ui.base.ViewModelFactory
 import com.stslex.aproselection.feature.home.domain.HomeInteractor
 import com.stslex.aproselection.feature.home.domain.HomeInteractorImpl
 import com.stslex.aproselection.feature.home.ui.HomeViewModel

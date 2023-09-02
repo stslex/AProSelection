@@ -1,17 +1,22 @@
 package com.stslex.aproselection.core.navigation.di
 
+import androidx.navigation.NavHostController
+import com.stslex.aproselection.core.ui.di.NavigationApi
+import dagger.BindsInstance
 import dagger.Component
+import javax.inject.Singleton
 
-@Component(
-    modules = [NavigationModule::class],
-    dependencies = [NavigationDependencies::class]
-)
+@Component(modules = [NavigationModule::class])
+@Singleton
 interface NavigationComponent : NavigationApi {
 
-    @Component.Factory
-    interface Factory {
+    @Component.Builder
+    interface Builder {
 
-        fun create(dependencies: NavigationDependencies): NavigationApi
+        @BindsInstance
+        fun controller(navHostController: NavHostController): Builder
+
+        fun build(): NavigationApi
     }
 }
 

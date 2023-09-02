@@ -12,7 +12,9 @@ import io.ktor.util.AttributeKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserNetworkClientImpl @Inject constructor(
     private val networkClient: NetworkClient
 ) : UserNetworkClient {
