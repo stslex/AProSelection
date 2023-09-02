@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-class InitialAppViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val controller: AuthController,
     private val navigator: Lazy<Navigator>,
 ) : ViewModel() {

@@ -1,19 +1,13 @@
 package com.stslex.aproselection.feature.main.di
 
 import com.stslex.aproselection.core.core.AppApi
-import com.stslex.aproselection.core.core.ViewModelModule
 import com.stslex.aproselection.core.navigation.di.NavigationApi
 import com.stslex.aproselection.feature.main.MainActivity
 import dagger.Component
 
 @Component(
-    modules = [
-        MainModule::class,
-        ViewModelModule::class
-    ],
-    dependencies = [
-        MainDependencies::class
-    ]
+    modules = [MainModule::class],
+    dependencies = [MainDependencies::class]
 )
 interface MainComponent {
 

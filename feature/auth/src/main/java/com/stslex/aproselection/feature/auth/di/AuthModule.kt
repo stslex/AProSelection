@@ -1,6 +1,7 @@
 package com.stslex.aproselection.feature.auth.di
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.stslex.aproselection.core.core.ViewModelKey
 import com.stslex.aproselection.feature.auth.data.repository.AuthRepository
 import com.stslex.aproselection.feature.auth.data.repository.AuthRepositoryImpl
@@ -22,11 +23,17 @@ interface AuthModule {
     fun bindsViewModel(impl: AuthViewModel): ViewModel
 
     @Binds
+    @AuthScope
     fun bindsAuthInteractor(impl: AuthInteractorImpl): AuthInteractor
 
     @Binds
+    @AuthScope
     fun bindsRepository(impl: AuthRepositoryImpl): AuthRepository
 
     @Binds
+    @AuthScope
     fun bindStore(impl: AuthStoreImpl): AuthStore
+
+    @Binds
+    fun bindsViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
 }

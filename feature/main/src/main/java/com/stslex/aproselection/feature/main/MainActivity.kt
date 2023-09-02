@@ -4,10 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.stslex.aproselection.core.core.appApi
@@ -19,9 +15,6 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var viewModelProvider: ViewModelProvider.Factory
-    private val viewModel: InitialAppViewModel by viewModels {
-        viewModelProvider
-    }
     private val mainComponent by lazy {
         MainComponentBuilder.build(appApi)
     }
@@ -38,17 +31,11 @@ class MainActivity : ComponentActivity() {
 //                        get() = navHostController
 //                })
 //            DaggerMainComponent.builder().navigationApi(navigationApi).build().inject(this)
-            val isInitialAuth by remember {
-                viewModel.isInitialAuth
-            }.collectAsState()
             AppTheme {
                 InitialApp(
                     navController = navHostController,
-                    isInitialAuth = isInitialAuth
+                    viewModelFactory = viewModelProvider
                 )
-                LaunchedEffect(Unit) {
-                    viewModel.init()
-                }
             }
         }
     }

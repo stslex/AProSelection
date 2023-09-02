@@ -20,6 +20,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.stslex.aproselection.core.navigation.destination.AppDestination
 import com.stslex.aproselection.core.ui.ext.noRippleClick
@@ -38,10 +42,20 @@ import com.stslex.aproselection.feature.main.components.menu_icon.AppDrawerState
 @Composable
 fun InitialApp(
     navController: NavHostController,
-    isInitialAuth: Boolean?,
+    viewModelFactory: ViewModelProvider.Factory
 ) {
     var isAuth by remember {
         mutableStateOf(false)
+    }
+
+    val viewModel = viewModel<MainViewModel>(factory = viewModelFactory)
+
+    val isInitialAuth by remember {
+        viewModel.isInitialAuth
+    }.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.init()
     }
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -54,7 +68,7 @@ fun InitialApp(
             AppContainer(isAuth = isAuth) {
                 NavigationHost(
                     navController = navController,
-                    startDestination = destination
+                    startDestination = destination,
                 )
             }
         }

@@ -9,8 +9,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.coroutines.coroutineContext
 
+@Singleton
 class AuthControllerImpl @Inject constructor(
     private val dataStore: AppDataStore,
 ) : AuthController {

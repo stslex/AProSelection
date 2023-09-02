@@ -1,8 +1,10 @@
 package com.stslex.aproselection.feature.main.di
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.stslex.aproselection.feature.main.ViewModelFactory
 import com.stslex.aproselection.core.core.ViewModelKey
-import com.stslex.aproselection.feature.main.InitialAppViewModel
+import com.stslex.aproselection.feature.main.MainViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -12,6 +14,9 @@ interface MainModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(InitialAppViewModel::class)
-    fun bindMainViewModel(impl: InitialAppViewModel): ViewModel
+    @ViewModelKey(MainViewModel::class)
+    fun bindMainViewModel(impl: MainViewModel): ViewModel
+
+    @Binds
+    fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
 }
