@@ -1,6 +1,8 @@
 package com.stslex.aproselection.core.navigation.destination
 
-sealed interface NavigationScreen {
+import com.stslex.aproselection.core.ui.di.Screen
+
+sealed interface NavigationScreen : Screen {
 
     val screen: AppDestination
 

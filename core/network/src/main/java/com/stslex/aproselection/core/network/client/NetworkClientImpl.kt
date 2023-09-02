@@ -1,6 +1,6 @@
 package com.stslex.aproselection.core.network.client
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import com.stslex.aproselection.core.network.BuildConfig
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
@@ -35,8 +35,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetworkClientImpl(
+@Singleton
+class NetworkClientImpl @Inject constructor(
     private val dataStore: AppDataStore
 ) : NetworkClient {
 

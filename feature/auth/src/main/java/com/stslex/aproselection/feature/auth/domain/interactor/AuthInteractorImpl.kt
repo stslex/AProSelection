@@ -3,8 +3,9 @@ package com.stslex.aproselection.feature.auth.domain.interactor
 import com.stslex.aproselection.feature.auth.data.model.UserModel
 import com.stslex.aproselection.feature.auth.data.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AuthInteractorImpl(
+class AuthInteractorImpl @Inject constructor(
     private val repository: AuthRepository
 ) : AuthInteractor {
 

@@ -1,53 +1,51 @@
 package com.stslex.aproselection
 
 import android.app.Application
-import com.stslex.aproselection.controller.AuthController
-import com.stslex.aproselection.core.datastore.AppDataStore
-import com.stslex.aproselection.core.datastore.coreDataStoreModule
-import com.stslex.aproselection.core.network.di.ModuleCoreNetwork.moduleCoreNetwork
-import com.stslex.aproselection.core.user.di.moduleCoreUser
-import com.stslex.aproselection.di.appModule
-import com.stslex.aproselection.feature.auth.di.ModuleFeatureAuth.moduleFeatureAuth
-import com.stslex.aproselection.feature.home.di.moduleFeatureHome
+import com.stslex.aproselection.core.core.AppApi
+import com.stslex.aproselection.core.core.AppCoreApi
+import com.stslex.aproselection.core.core.ApplicationApi
+import com.stslex.aproselection.core.core.AuthController
+import com.stslex.aproselection.core.datastore.store.AppDataStore
+import com.stslex.aproselection.di.AppComponent
+import com.stslex.aproselection.di.AppComponentBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
+import javax.inject.Inject
 
-class SelectApplication : Application() {
+class SelectApplication : Application(), ApplicationApi {
 
-    private val coroutineScope = CoroutineScope(SupervisorJob())
-    private val appController: AuthController by inject()
-    private val dataStore: AppDataStore by inject()
-
-    override fun onCreate() {
-        super.onCreate()
-        setupDependencies()
-        initControllers()
+    private val appCoreApi: AppCoreApi by lazy {
+        AppComponentBuilder.build(this)
     }
 
-    private fun initControllers() {
+    private val appComponent: AppComponent by lazy {
+        AppComponentBuilder.build(appCoreApi)
+    }
+
+    override val appApi: AppApi
+        get() = appComponent
+
+    private lateinit var dataStore: AppDataStore
+    private lateinit var appController: AuthController
+
+    @Inject
+    fun initDependencies(
+        dataStore: AppDataStore,
+        appController: AuthController
+    ) {
+        this.dataStore = dataStore
+        this.appController = appController
+    }
+
+    private val coroutineScope = CoroutineScope(SupervisorJob())
+
+    override fun onCreate() {
+        appComponent.inject(this)
+        super.onCreate()
         coroutineScope.launch {
             appController.init()
             dataStore.init()
-        }
-    }
-
-    private fun setupDependencies() {
-        startKoin {
-            androidLogger()
-            androidContext(applicationContext)
-            modules(
-                appModule,
-                moduleCoreNetwork,
-                moduleCoreUser,
-                coreDataStoreModule,
-                moduleFeatureAuth,
-                moduleFeatureHome,
-            )
         }
     }
 }

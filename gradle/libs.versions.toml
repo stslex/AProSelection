@@ -8,6 +8,7 @@ ktx = "1.10.1"
 material = "1.9.0"
 appcompat = "1.6.1"
 immutableCollection = "0.3.5"
+lifecycle = "2.6.1"
 
 composeCompiler = "1.5.1"
 composeBom = "2023.08.00"
@@ -19,8 +20,7 @@ ktor = "2.3.3"
 ktorAndroid = "2.2.4"
 okhttp3 = "4.11.0"
 
-koin = "3.3.0"
-koinAndroid = "3.4.0"
+dagger = "2.48"
 
 junit = "4.13.2"
 androidxJunit = "1.1.5"
@@ -42,6 +42,8 @@ kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotli
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+lifecycle-viewModel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 
@@ -60,10 +62,10 @@ androidx-compose-navigation = { group = "androidx.navigation", name = "navigatio
 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 
-androidx-compose-paging = "androidx.paging:paging-compose:1.0.0-alpha20"
-androidx-paging-runtime = "androidx.paging:paging-runtime-ktx:3.1.1"
+androidx-compose-paging = "androidx.paging:paging-compose:3.2.0"
+androidx-paging-runtime = "androidx.paging:paging-runtime-ktx:3.2.0"
 
-kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+kotlinx-serialization-json = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
 accompanist-placeholder = { module = "com.google.accompanist:accompanist-placeholder", version.ref = "accompanist" }
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
@@ -77,18 +79,13 @@ ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serializati
 ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-brotli = { module = "org.brotli:dec", version = "0.1.2" }
 
 okhttp3-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3" }
 okhttp3-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp3" }
-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "1.7.9" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version = "1.7.36" }
 
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
-koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
-
-koin-test-core = { module = "io.insert-koin:koin-test", version.ref = "koin" }
-koin-test-junit = { module = "io.insert-koin:koin-test-junit4", version.ref = "koin" }
+dagger-core = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 mockito = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
@@ -113,6 +110,10 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
 
+lifecycle = [
+    "lifecycle-compose",
+    "lifecycle-viewModel"
+]
 accompanist = [
     "accompanist-placeholder",
     "accompanist-systemuicontroller",
@@ -126,7 +127,8 @@ compose = [
     "androidx-compose-foundation",
     "androidx-compose-paging",
     "androidx-compose-material",
-    "coil-compose"
+    "coil-compose",
+    "androidx-compose-navigation"
 ]
 
 ktor = [
@@ -136,16 +138,9 @@ ktor = [
     "ktor-client-encoding",
     "ktor-client-serialization",
     "ktor-serialization-kotlinx-json",
-    "brotli",
     "ktor-client-logging",
     "ktor-client-android",
     "ktor-client-auth"
-]
-
-koin = [
-    "koin-core",
-    "koin-android",
-    "koin-androidx-compose",
 ]
 
 okhttp = [
@@ -163,8 +158,6 @@ android-test = [
 test = [
     "mockito",
     "junit",
-    "koin-test-core",
-    "koin-test-junit",
     "coroutine-test"
 ]
 

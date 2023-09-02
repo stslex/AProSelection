@@ -5,8 +5,9 @@ import com.stslex.aproselection.core.user.data.model.UserData
 import com.stslex.aproselection.core.user.data.model.UserUpdateData
 import com.stslex.aproselection.core.user.data.model.toBody
 import com.stslex.aproselection.core.user.data.model.toData
+import javax.inject.Inject
 
-class UserRepositoryImpl(
+class UserRepositoryImpl @Inject constructor(
     private val networkClient: UserNetworkClient
 ) : UserRepository {
 

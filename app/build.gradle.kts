@@ -12,4 +12,5 @@ dependencies {
     implementation(project(":core:user"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:main"))
 }
