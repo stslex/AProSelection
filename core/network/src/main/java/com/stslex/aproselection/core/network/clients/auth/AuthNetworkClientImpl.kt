@@ -1,6 +1,6 @@
 package com.stslex.aproselection.core.network.clients.auth
 
-import com.stslex.aproselection.core.datastore.AppDataStore
+import com.stslex.aproselection.core.datastore.store.AppDataStore
 import com.stslex.aproselection.core.network.client.NetworkClient
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthRequestModel
 import com.stslex.aproselection.core.network.clients.auth.model.UserAuthResponseModel
@@ -13,8 +13,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthNetworkClientImpl(
+@Singleton
+class AuthNetworkClientImpl @Inject constructor(
     private val networkClient: NetworkClient,
     private val dataStore: AppDataStore
 ) : AuthNetworkClient {

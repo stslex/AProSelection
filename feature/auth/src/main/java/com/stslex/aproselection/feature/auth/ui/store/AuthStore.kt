@@ -38,7 +38,9 @@ interface AuthStore : Store<State, Event, Action> {
 
     sealed interface Action : Store.Action {
 
-        data object OnSubmitClicked : Action
+        data class OnSubmitClicked(
+            val state: AuthFieldsState
+        ) : Action
 
         data class OnAuthFieldChange(
             val targetState: AuthFieldsState

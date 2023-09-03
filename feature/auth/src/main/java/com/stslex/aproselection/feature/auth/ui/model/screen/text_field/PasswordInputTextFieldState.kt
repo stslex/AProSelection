@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import com.stslex.aproselection.feature.auth.R
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.hidden.HiddenState
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
 import com.stslex.aproselection.feature.auth.ui.store.AuthStore.Action.InputAction
 
 @Stable
@@ -16,12 +17,14 @@ data class PasswordInputTextFieldState(
     private val processAction: (InputAction.PasswordInput) -> Unit,
     private val hiddenState: HiddenState,
     override val text: String,
+    val authFieldsState: AuthStore.AuthFieldsState
 ) : PasswordTextFieldState(
     hapticFeedback = hapticFeedback,
     hiddenState = hiddenState
 ) {
 
     override val hint: Int = R.string.auth_password_enter_hint_text
+    override val hasNext: Boolean = authFieldsState == AuthStore.AuthFieldsState.REGISTER
 
     override val sendAction: (text: String) -> Unit
         get() = { value ->
@@ -33,15 +36,17 @@ data class PasswordInputTextFieldState(
 fun rememberPasswordInputTextFieldState(
     processAction: (InputAction.PasswordInput) -> Unit,
     text: String,
+    authFieldsState: AuthStore.AuthFieldsState
 ): PasswordInputTextFieldState {
     val hapticFeedback = LocalHapticFeedback.current
     val hiddenState = remember { HiddenState() }
-    return remember(text) {
+    return remember(text, authFieldsState) {
         PasswordInputTextFieldState(
             hapticFeedback = hapticFeedback,
             processAction = processAction,
             hiddenState = hiddenState,
-            text = text
+            text = text,
+            authFieldsState = authFieldsState
         )
     }
 }

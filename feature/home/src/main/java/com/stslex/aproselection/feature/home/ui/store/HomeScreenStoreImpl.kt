@@ -17,8 +17,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeScreenStoreImpl(
+class HomeScreenStoreImpl @Inject constructor(
     private val interactor: HomeInteractor,
 ) : HomeScreenStore, BaseStoreImpl<State, Event, Action>() {
 

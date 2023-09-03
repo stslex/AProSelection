@@ -15,8 +15,9 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthStoreImpl(
+class AuthStoreImpl @Inject constructor(
     private val interactor: AuthInteractor
 ) : AuthStore, BaseStoreImpl<State, Event, Action>() {
 
@@ -33,7 +34,7 @@ class AuthStoreImpl(
     override fun processAction(action: Action) {
         when (action) {
             is Action.InputAction.UsernameInput -> processUsernameInput(action)
-            is Action.OnSubmitClicked -> processSubmitClicked()
+            is Action.OnSubmitClicked -> processSubmitClicked(action)
             is Action.InputAction.PasswordInput -> processPasswordInput(action)
             is Action.InputAction.PasswordSubmitInput -> processPasswordSubmitInput(action)
             is Action.OnAuthFieldChange -> processAuthFieldChange(action)
@@ -72,8 +73,8 @@ class AuthStoreImpl(
         }
     }
 
-    private fun processSubmitClicked() {
-        when (state.value.authFieldsState) {
+    private fun processSubmitClicked(action: Action.OnSubmitClicked) {
+        when (action.state) {
             AuthFieldsState.AUTH -> auth()
             AuthFieldsState.REGISTER -> register()
         }

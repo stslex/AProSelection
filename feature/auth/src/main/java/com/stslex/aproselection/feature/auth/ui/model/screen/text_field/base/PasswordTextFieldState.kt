@@ -17,6 +17,7 @@ abstract class PasswordTextFieldState(
 
     override val label: Int = R.string.auth_password_text
     abstract val hint: Int
+    abstract val hasNext: Boolean
 
     val visualTransformation = derivedStateOf {
         if (hiddenState.isHidden) {

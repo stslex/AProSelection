@@ -1,16 +1,24 @@
 package com.stslex.aproselection.core.navigation.navigator
 
 import androidx.navigation.NavHostController
+import com.stslex.aproselection.core.core.Logger
 import com.stslex.aproselection.core.navigation.destination.NavigationScreen
+import com.stslex.aproselection.core.ui.di.Screen
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NavigatorImpl(
+@Singleton
+class NavigatorImpl @Inject constructor(
     private val navController: NavHostController
-) : Navigator {
+) : com.stslex.aproselection.core.ui.di.Navigator {
 
-    override fun navigate(screen: NavigationScreen) {
+    override fun navigate(screen: Screen) {
         when (screen) {
             is NavigationScreen.PopBackStack -> navController.popBackStack()
-            else -> navigateScreen(screen)
+            is NavigationScreen -> navigateScreen(screen)
+            else -> {
+                Logger.debug("unresolve navigation route", this::class.simpleName)
+            }
         }
     }
 

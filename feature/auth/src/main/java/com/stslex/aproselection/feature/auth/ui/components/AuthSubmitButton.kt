@@ -1,6 +1,9 @@
 package com.stslex.aproselection.feature.auth.ui.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +15,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.feature.auth.ui.store.AuthStore
 
 @Composable
 fun AuthSubmitButton(
     isValid: Boolean,
-    onClick: () -> Unit,
+    authFieldsState: AuthStore.AuthFieldsState,
+    onClick: (AuthStore.AuthFieldsState) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val haptic = LocalHapticFeedback.current
@@ -26,13 +33,20 @@ fun AuthSubmitButton(
         modifier = modifier,
         onClick = {
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-            onClick()
+            onClick(authFieldsState)
         },
         enabled = isValid
     ) {
         Text(
-            text = "submit",
-            style = MaterialTheme.typography.headlineSmall
+            modifier = Modifier.animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioHighBouncy,
+                    stiffness = Spring.StiffnessHigh
+                )
+            ),
+            text = stringResource(id = authFieldsState.titleResId).lowercase(),
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -52,7 +66,8 @@ fun AuthSubmitButtonPreview() {
         ) {
             AuthSubmitButton(
                 isValid = true,
-                onClick = { /*TODO*/ }
+                onClick = { /*TODO*/ },
+                authFieldsState = AuthStore.AuthFieldsState.AUTH
             )
         }
     }

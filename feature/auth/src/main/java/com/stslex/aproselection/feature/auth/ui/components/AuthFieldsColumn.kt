@@ -2,6 +2,11 @@ package com.stslex.aproselection.feature.auth.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +42,9 @@ fun AuthFieldsColumn(
         Spacer(Modifier.height(AppDimens.Padding.medium))
         AuthPasswordTextField(state.passwordEnterState)
         AnimatedVisibility(
-            visible = state.isRegisterState
+            visible = state.isRegisterState,
+            enter = fadeIn(tween(300)) + expandVertically(tween(600)),
+            exit = fadeOut(tween(300)) + shrinkVertically(tween(600))
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -49,6 +56,7 @@ fun AuthFieldsColumn(
         Spacer(Modifier.height(AppDimens.Padding.big))
         AuthSubmitButton(
             isValid = state.isFieldsValid,
+            authFieldsState = state.authFieldsState,
             onClick = state::onSubmitClicked,
         )
     }

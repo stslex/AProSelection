@@ -7,10 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.stslex.aproselection.core.navigation.destination.AppDestination
+import com.stslex.aproselection.feature.home.di.setupComponent
 import com.stslex.aproselection.feature.home.ui.HomeScreen
-import com.stslex.aproselection.feature.home.ui.HomeViewModel
 import com.stslex.aproselection.feature.home.ui.store.HomeScreenStore.Action
-import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.homeRouter(
     modifier: Modifier = Modifier,
@@ -18,7 +17,7 @@ fun NavGraphBuilder.homeRouter(
     composable(
         route = AppDestination.HOME.navigationRoute
     ) {
-        val viewModel: HomeViewModel = koinViewModel()
+        val viewModel = setupComponent()
 
         val state by remember {
             viewModel.state
