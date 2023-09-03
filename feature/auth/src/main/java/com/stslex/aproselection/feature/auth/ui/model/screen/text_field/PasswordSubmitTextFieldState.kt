@@ -22,7 +22,7 @@ data class PasswordSubmitTextFieldState(
 ) {
 
     override val hint: Int = R.string.auth_password_submit_hint_text
-
+    override val hasNext: Boolean = true
     override val sendAction: (text: String) -> Unit
         get() = { value ->
             processAction(PasswordSubmitInput(value))

@@ -51,9 +51,9 @@ data class AuthScreenState @OptIn(ExperimentalMaterialApi::class) constructor(
 
     val isRegisterState = authFieldsState == AuthFieldsState.REGISTER
 
-    fun onSubmitClicked() {
+    fun onSubmitClicked(state: AuthFieldsState) {
         keyboardController?.hide()
-        processAction(Action.OnSubmitClicked)
+        processAction(Action.OnSubmitClicked(state))
     }
 }
 
@@ -74,7 +74,8 @@ fun rememberAuthScreenState(
 
     val passwordEnterState = rememberPasswordInputTextFieldState(
         processAction = processAction,
-        text = screenState.password
+        text = screenState.password,
+        authFieldsState = screenState.authFieldsState
     )
 
     val passwordSubmitState = rememberPasswordSubmitTextFieldState(

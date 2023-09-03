@@ -9,13 +9,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -24,6 +20,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.stslex.aproselection.core.ui.theme.AppTheme
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.PasswordInputTextFieldState
+import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.PasswordSubmitTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.base.PasswordTextFieldState
 import com.stslex.aproselection.feature.auth.ui.model.screen.text_field.rememberPasswordSubmitTextFieldState
 
@@ -32,7 +30,7 @@ fun AuthPasswordTextField(
     state: PasswordTextFieldState,
     modifier: Modifier = Modifier
 ) {
-    TextField(
+    OutlinedTextField(
         modifier = modifier
             .fillMaxWidth(),
         value = state.text,
@@ -56,7 +54,11 @@ fun AuthPasswordTextField(
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Next
+            imeAction = when (state) {
+                is PasswordSubmitTextFieldState -> ImeAction.Done
+                is PasswordInputTextFieldState -> if (state.hasNext) ImeAction.Next else ImeAction.Done
+                else -> ImeAction.None
+            },
         ),
         trailingIcon = {
             IconButton(
@@ -78,9 +80,6 @@ fun AuthPasswordTextField(
 @Composable
 fun AuthPasswordTextFieldPreview() {
     AppTheme {
-        var text by remember {
-            mutableStateOf("text")
-        }
         Box(
             modifier = Modifier
                 .fillMaxSize()

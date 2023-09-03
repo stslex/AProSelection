@@ -34,7 +34,7 @@ class AuthStoreImpl @Inject constructor(
     override fun processAction(action: Action) {
         when (action) {
             is Action.InputAction.UsernameInput -> processUsernameInput(action)
-            is Action.OnSubmitClicked -> processSubmitClicked()
+            is Action.OnSubmitClicked -> processSubmitClicked(action)
             is Action.InputAction.PasswordInput -> processPasswordInput(action)
             is Action.InputAction.PasswordSubmitInput -> processPasswordSubmitInput(action)
             is Action.OnAuthFieldChange -> processAuthFieldChange(action)
@@ -73,8 +73,8 @@ class AuthStoreImpl @Inject constructor(
         }
     }
 
-    private fun processSubmitClicked() {
-        when (state.value.authFieldsState) {
+    private fun processSubmitClicked(action: Action.OnSubmitClicked) {
+        when (action.state) {
             AuthFieldsState.AUTH -> auth()
             AuthFieldsState.REGISTER -> register()
         }

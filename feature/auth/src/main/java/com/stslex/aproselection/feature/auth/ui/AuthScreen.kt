@@ -13,10 +13,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.swipeable
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -113,7 +113,7 @@ fun AuthUsernameTextField(
     state: UsernameTextFieldState,
     modifier: Modifier = Modifier
 ) {
-    TextField(
+    OutlinedTextField(
         modifier = modifier
             .fillMaxWidth(),
         value = state.text,
